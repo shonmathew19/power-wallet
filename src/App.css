@@ -1,0 +1,67 @@
+body {
+  overflow-x: hidden;
+}
+
+.bar {
+  width: 100%;
+  height: 10px;
+  background: radial-gradient(circle, #ff0000, #000080);
+  background-size: 200% 200%;
+  animation: gradientAnimation 3s ease infinite;
+}
+
+.logo-image {
+  margin: 0px !important;
+
+}
+
+.login-second-col-btn {
+  background: linear-gradient(to right, #005C99, #004B73, #00334D, #001F3F);
+
+}
+
+.navbar-items {
+  position: relative ;
+}
+
+.navbar-items::after {
+  content: "" ;
+  position: absolute;
+  height: 2px ;
+  bottom: 0 ;
+  left: 0 !important;
+  background-color: #ff5722 !important;
+  width: 0 ; 
+  transition: width 0.3s ease ;
+}
+.navbar-items:hover {
+  color: #ff5722 !important ; 
+}
+.navbar-items:hover::after {
+  width: 100% ;
+}
+
+footer a{
+  text-decoration: none;
+}
+footer a:hover {
+  color: #ff5722 !important;
+  text-decoration: underline;
+}
+.footer-heading{
+  color: #ff5722 !important;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
