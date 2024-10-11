@@ -74,7 +74,7 @@ function Login({ register }) {
 
                             }
                         </div>
-                        <Link to={'/home'} className='mb-3 mt-3'><button className=' login-second-col-btn text-light rounded-5'> Back to <i class="fa-solid fa-house ms-2"></i></button></Link>
+                       
                     </Col>
 
                     {/* Second Column (Sign Up Info) */}
