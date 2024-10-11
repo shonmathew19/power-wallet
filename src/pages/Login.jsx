@@ -24,7 +24,7 @@ function Login({ register }) {
                                     <Navbar.Brand href='/home' className='d-flex'>
                                         <img
                                             alt=""
-                                            src="src\assets\images\logo.jpg"
+                                            src="/images/logo.jpg"
                                             width="40"
                                             height="40"
                                             className="d-inline-block align-top rounded-4 shadow"
