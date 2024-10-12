@@ -21,7 +21,7 @@ function Login({ register }) {
                         <div className="d-flex " >
                             <Navbar >
                                 <Container>
-                                    <Navbar.Brand href='/home' className='d-flex'>
+                                    <Navbar.Brand as={Link} to={'/home'} className='d-flex'>
                                         <img
                                             alt=""
                                             src="/images/logo.jpg"
