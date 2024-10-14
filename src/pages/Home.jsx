@@ -1,13 +1,29 @@
 import React from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { Col, Row } from 'react-bootstrap'
+
+
+
 
 function Home() {
+
     return (
         <>
+
             <Header />
-            <Link to={'/login'} className='mb-3 mt-3'><button className=' login-second-col-btn text-light rounded-5'> Back to <i class="fa-solid fa-house ms-2"></i></button></Link>
+            <Row className='home-row' >
+                <Col md={6}>
+                    <div className='d-flex justify-content-center align-items-center p-5 m-4'>
+                        
+                        
+                    </div>
+                </Col>
+                <Col md={6}>
+
+                </Col>
+            </Row>
             <Footer />
         </>
     )

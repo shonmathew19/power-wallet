@@ -6,6 +6,8 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import Home from './pages/Home'
 import NewConnection from './pages/NewConnection'
+import TermsAndConditions from './pages/TermsAndConditions'
+import PrivacyPolicy from './pages/PrivacyPolicy'
 
 function App() {
 
@@ -19,7 +21,10 @@ function App() {
         <Route path='/register' element={<Login register={'register'} />} />
         <Route path='/home' element={<Home />} />
         <Route path='/new-connection' element={<NewConnection />} />
+        <Route path='/terms-and-conditions' element={<TermsAndConditions/>} />
+        <Route path='/privacy-policy' element={<PrivacyPolicy/>} />
       </Routes>
+      
     </>
   )
 }

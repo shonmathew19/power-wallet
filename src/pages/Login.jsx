@@ -7,7 +7,7 @@ function Login({ register }) {
     return (
         <>
             <div>
-                <div className='bar' ></div>
+                <div className='bar'></div>
                 <Row className="vh-100">
 
 
@@ -80,12 +80,12 @@ function Login({ register }) {
                     {/* Second Column (Sign Up Info) */}
                     <Col
                         md={5}
-                        className="d-flex flex-column justify-content-center align-items-center text-center text-light p-3 rounded-3 login-second-col-btn"
+                        className="d-flex flex-column justify-content-center align-items-center text-center text-light p-3  login-second-col-btn login-col-2 p-5"
 
                     >
                         <div className="d-flex flex-column align-items-center">
-                            <h1 className="fw-bold">New Here?</h1>
-                            <h3 className="mt-5 text-center">
+                            <h1 className="fw-bold new-here">New Here?</h1>
+                            <h3 className="mt-3 text-center">
                                 Sign up to explore more and pay your bills online
                             </h3>
                             <Link to={'/register'}>
