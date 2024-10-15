@@ -17,6 +17,13 @@ body {
   font-size: 48px;
   font-weight: bold;
 }
+.red-yellow-white-gradient{
+  background: linear-gradient(45deg, #ff0000, #c8ff00, white);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bold;
+  
+}
 
 .logo-image {
   margin: 0px !important;

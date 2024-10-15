@@ -3,6 +3,7 @@ import { Container } from 'react-bootstrap';
 import Header from '../components/Header';
 import { useNavigate,Link } from 'react-router-dom';
 import Swal from 'sweetalert2'
+import Footer from '../components/Footer'
 
 
 function NewConnection() {
@@ -252,7 +253,7 @@ function NewConnection() {
                             </div>
 
                             <div className="text-center mb-4 d-flex flex-column justify-content-center align-items-center">
-                            <Link to={'/termsandconditions'} target='_blank' className='ms-1 mb-2' style={{color:'blue', fontStyle:'italic',textDecoration:'none'}}>click to see :"terms & conditions apply"</Link>
+                            <Link to={'/terms-and-conditions'} target='_blank' className='ms-1 mb-2' style={{color:'blue', fontStyle:'italic',textDecoration:'none'}}>click to see :"terms & conditions apply"</Link>
                                 <button type="submit" className="btn btn-primary login-second-col-btn rounded-5 w-50">
                                     Submit
                                 </button>
@@ -263,6 +264,7 @@ function NewConnection() {
                     </div>
                 </form>
             </Container>
+            <Footer />
         </>
     );
 }

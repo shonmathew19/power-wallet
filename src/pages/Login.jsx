@@ -64,17 +64,17 @@ function Login({ register }) {
                                 register ?
                                     <>
                                         <button className="btn btn-success mt-4 mb-3 w-50 rounded-5 login-second-col-btn" >Sign Up</button>
-                                        <p className='mt-3 text-center'>Already a user? Click here to <Link className='ms-1' to={'/login'}>Login</Link></p>
+                                        <p className='mt-3 text-center'>Already a user? Click here to <Link style={{ textDecoration: 'none',color:'#ff5722' }} className='ms-1' to={'/login'}>Login</Link></p>
                                     </>
                                     :
                                     <>
                                         <button className="btn btn-success mt-4 mb-3 w-50 rounded-5 login-second-col-btn" >Sign In</button>
-                                        <p className='mt-3 text-center'>Not a registered? Click here to <Link className='ms-1' to={'/register'}>Register</Link></p>
+                                        <p className='mt-3 text-center'>Not a registered? Click here to <Link style={{ textDecoration: 'none',color:'#ff5722' }} className='ms-1' to={'/register'}>Register</Link></p>
                                     </>
 
                             }
                         </div>
-                       
+
                     </Col>
 
                     {/* Second Column (Sign Up Info) */}
@@ -88,11 +88,18 @@ function Login({ register }) {
                             <h3 className="mt-3 text-center">
                                 Sign up to explore more and pay your bills online
                             </h3>
-                            <Link to={'/register'}>
-                                <button className="btn btn-light rounded-5 mt-3">
-                                    Get Started
-                                </button>
-                            </Link>
+
+                            {
+                                register ?
+                                    <div className='d-flex align-items-center'>
+                                        <i class="fa-solid fa-arrow-left fa-bounce fa-3x me-3"></i>
+                                        <span className='red-yellow-white-gradient'> Enter your details and create account</span>
+                                    </div>
+                                    :
+                                    <Link to={'/register'}  className="btn btn-light rounded-5 mt-3">
+                                        Get Started
+                                    </Link>
+                            }
                         </div>
 
                     </Col>
