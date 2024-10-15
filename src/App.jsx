@@ -21,7 +21,7 @@ function App() {
         <Route path='/register' element={<Login register={'register'} />} />
         <Route path='/home' element={<Home />} />
         <Route path='/new-connection' element={<NewConnection />} />
-        <Route path='/terms-and-conditions' element={<TermsAndConditions/>} />
+        <Route path='/termsandconditions' element={<TermsAndConditions/>} />
         <Route path='/privacy-policy' element={<PrivacyPolicy/>} />
       </Routes>
       

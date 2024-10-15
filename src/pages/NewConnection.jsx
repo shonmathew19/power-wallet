@@ -252,7 +252,7 @@ function NewConnection() {
                             </div>
 
                             <div className="text-center mb-4 d-flex flex-column justify-content-center align-items-center">
-                            <Link to={'/terms-and-conditions'} target='_blank' className='ms-1 mb-2' style={{color:'blue', fontStyle:'italic',textDecoration:'none'}}>click to see :"terms & conditions apply"</Link>
+                            <Link to={'/termsandconditions'} target='_blank' className='ms-1 mb-2' style={{color:'blue', fontStyle:'italic',textDecoration:'none'}}>click to see :"terms & conditions apply"</Link>
                                 <button type="submit" className="btn btn-primary login-second-col-btn rounded-5 w-50">
                                     Submit
                                 </button>
