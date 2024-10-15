@@ -247,12 +247,12 @@ function NewConnection() {
                                     checked={declaration}
                                     onChange={handleChange}
                                 />
-                                <label className="form-check-label" htmlFor="declaration">I hereby declare that the information provided above is true to the best of my knowledge. I understand that any false information may lead to the rejection of my application.
-                                    <Link to={'/terms-and-conditions'} target='_blank' className='ms-1' style={{color:'blue', fontStyle:'italic',textDecoration:'none'}}>"terms & conditions apply"</Link>
-                                </label>
+                                <label  className="form-check-label" htmlFor="declaration">I hereby declare that the information provided above is true to the best of my knowledge. I understand that any false information may lead to the rejection of my application.</label>
+                               
                             </div>
 
-                            <div className="text-center mb-4">
+                            <div className="text-center mb-4 d-flex flex-column justify-content-center align-items-center">
+                            <Link to={'/terms-and-conditions'} target='_blank' className='ms-1 mb-2' style={{color:'blue', fontStyle:'italic',textDecoration:'none'}}>click to see :"terms & conditions apply"</Link>
                                 <button type="submit" className="btn btn-primary login-second-col-btn rounded-5 w-50">
                                     Submit
                                 </button>
