@@ -6,7 +6,7 @@ import Footer from '../components/Footer'
 function ConsumerInfoForm() {
     return (
         <>
-            <Header />
+           
 
             <div className="container-fluid mt-5">
                 <h2 className="mb-4 text-center text-primary">Consumer Information Summary</h2>
@@ -124,7 +124,7 @@ function ConsumerInfoForm() {
                 <Link to={'/billing'} className='btn text-light login-second-col-btn rounded-5 w-50'> Continue to payment page</Link>
                 </div>
             </div>
-            <Footer />
+           
         </>
     );
 }

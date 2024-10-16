@@ -69,7 +69,7 @@ function PrivacyPolicy() {
 
       <p><small>Last updated: [14-10-2024]</small></p>
 </div>
-  <Footer/>
+
     </>
   )
 }

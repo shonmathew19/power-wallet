@@ -12,7 +12,7 @@ function Home() {
     return (
         <>
 
-            <Header />
+           
             <marquee behavior="scroll" direction="left" scrollamount="5">
                 Investing in renewable energy is investing in a sustainable tomorrow, where clean power fuels innovation and progress.
             </marquee>
@@ -46,7 +46,7 @@ function Home() {
 
             </Row>
 
-            <Footer />
+          
 
         </>
     )

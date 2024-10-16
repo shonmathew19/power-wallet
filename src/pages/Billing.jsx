@@ -5,7 +5,7 @@ import Footer from '../components/Footer'
 function Billing() {
     return (
         <>
-            <Header />
+            
             <div className="container mt-5">
                 <h2 className="mb-4 text-center text-primary">Billing</h2>
                 <form className="d-flex flex-column align-items-center">
@@ -64,7 +64,7 @@ function Billing() {
                     <button type="submit" className="btn btn-primary mt-4 w-50 login-second-col-btn rounded-5 mb-3">Pay Now</button>
                 </form>
             </div>
-            <Footer />
+           
         </>
 
     );

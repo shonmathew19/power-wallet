@@ -78,11 +78,12 @@ function NewConnection() {
 
     return (
         <>
-            <Header />
+            
             <Container>
+            <h2 className='text-center mt-3' style={{ color: '#004B73' }}>New Connection Application Form</h2>
                 <form onSubmit={handleSubmit}>
                     <div className='border shadow rounded-3 m-3'>
-                        <h2 className='text-center mt-3' style={{ color: '#004B73' }}>New Connection Application Form</h2>
+                        
                         <h5 className='text-center mt-4' style={{ color: '#005C99' }}>Applicant Information</h5>
                         <div className='ms-3 me-3'>
 
@@ -264,7 +265,7 @@ function NewConnection() {
                     </div>
                 </form>
             </Container>
-            <Footer />
+            
         </>
     );
 }

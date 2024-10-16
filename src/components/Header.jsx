@@ -5,9 +5,12 @@ import Navbar from 'react-bootstrap/Navbar';
 import '../App.css'
 import { Link } from 'react-router-dom';
 
-function Header() {
+function Header({role}) {
+  role='admin'
   return (
-    <div>
+    <>
+    {role!=='admin'?
+      <div>
       <Navbar style={{ backgroundColor: '#001F3F' }} expand="lg" data-bs-theme="dark">
         <Container>
           <Navbar.Brand as={Link} to={'/'}>
@@ -34,7 +37,39 @@ function Header() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+    </div>:
+    <> 
+          <div>
+      <Navbar style={{ backgroundColor: '#001F3F' }} expand="lg" data-bs-theme="dark">
+        <Container>
+          <Navbar.Brand as={Link} to={'/'}>
+            <img
+              alt=""
+              src="/images/logo.jpg"
+              width="35"
+              height="35"
+              className="d-inline-block align-top rounded-4 shadow me-2"
+            />{' '}
+            <span style={{textAlign:'center'}}>POWER WALLET</span>
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ms-auto">
+            
+              <Nav.Link as={Link} to={'/'} className='navbar-items' >Home</Nav.Link>
+              <Nav.Link as={Link} to={'/dashboard'} className='navbar-items' >Dashboard</Nav.Link>
+              <Nav.Link as={Link} to={'/'}className='navbar-items' >Complaint Status</Nav.Link>
+              <Nav.Link as={Link} to={'/new-connection'}className='navbar-items' >New Connection</Nav.Link>
+              <Nav.Link as={Link} to={'/admin-page-consumer-info'}className='navbar-items' >Consumer Info</Nav.Link>
+
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
     </div>
+    </>
+    }
+    </>
   );
 }
 

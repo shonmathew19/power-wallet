@@ -3,8 +3,26 @@ import { Col, Row } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link } from 'react-router-dom';
-function Login({ register }) {
+function Login({ register, setRole }) {
+    
+    const handleLogin = (e) => {
+        e.preventDefault();
+
+
+        let userRole = null;
+        if (username === 'admin' && password === 'admin123') {
+            userRole = 'admin';
+        } else {
+            userRole = 'user';
+        }
+
+        // Set the role in the parent component
+        setRole(userRole);
+
+
+    };
     return (
+
         <>
             <div>
                 <div className='bar'></div>
@@ -64,12 +82,12 @@ function Login({ register }) {
                                 register ?
                                     <>
                                         <button className="btn btn-success mt-4 mb-3 w-50 rounded-5 login-second-col-btn" >Sign Up</button>
-                                        <p className='mt-3 text-center'>Already a user? Click here to <Link style={{ textDecoration: 'none',color:'#ff5722' }} className='ms-1' to={'/login'}>Login</Link></p>
+                                        <p className='mt-3 text-center'>Already a user? Click here to <Link style={{ textDecoration: 'none', color: '#ff5722' }} className='ms-1' to={'/login'}>Login</Link></p>
                                     </>
                                     :
                                     <>
-                                        <button className="btn btn-success mt-4 mb-3 w-50 rounded-5 login-second-col-btn" >Sign In</button>
-                                        <p className='mt-3 text-center'>Not a registered? Click here to <Link style={{ textDecoration: 'none',color:'#ff5722' }} className='ms-1' to={'/register'}>Register</Link></p>
+                                        <button className="btn btn-success mt-4 mb-3 w-50 rounded-5 login-second-col-btn" onClick={handleLogin} >Sign In</button>
+                                        <p className='mt-3 text-center'>Not a registered? Click here to <Link style={{ textDecoration: 'none', color: '#ff5722' }} className='ms-1' to={'/register'}>Register</Link></p>
                                     </>
 
                             }
@@ -96,7 +114,7 @@ function Login({ register }) {
                                         <span className='red-yellow-white-gradient'> Enter your details and create account</span>
                                     </div>
                                     :
-                                    <Link to={'/register'}  className="btn btn-light rounded-5 mt-3">
+                                    <Link to={'/register'} className="btn btn-light rounded-5 mt-3">
                                         Get Started
                                     </Link>
                             }
