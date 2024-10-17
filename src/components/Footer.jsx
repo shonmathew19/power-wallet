@@ -1,6 +1,7 @@
 import React from 'react';
 import '../App.css';
 import { Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
@@ -17,9 +18,9 @@ function Footer() {
           <Col  className="mb-4 mb-md-0">
             <h5 className="text-uppercase footer-heading">Useful Links</h5>
             <ul className="list-unstyled mb-0">
-              <li><a href="#!" className="text-white">About Us</a></li>
-              <li><a href="#!" className="text-white">Privacy Policy</a></li>
-              <li><a href="#!" className="text-white">Terms of Service</a></li>
+              <li><Link to={'/about'} className="text-white">About Us</Link></li>
+              <li><Link to={'/privacy-policy'} className="text-white">Privacy Policy</Link></li>
+              <li><Link to={'terms-and-conditions'} className="text-white">Terms of Service</Link></li>
             </ul>
           </Col>
 

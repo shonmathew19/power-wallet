@@ -182,7 +182,9 @@ footer a:hover {
   background-position: center;
   background-repeat: no-repeat;
   height: 100vh;
+  overflow: auto;
 }
+
 
 
 

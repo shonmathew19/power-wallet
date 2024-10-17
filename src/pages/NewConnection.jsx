@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { Container } from 'react-bootstrap';
 import Header from '../components/Header';
-import { useNavigate,Link } from 'react-router-dom';
-import Swal from 'sweetalert2'
-import Footer from '../components/Footer'
-
+import { useNavigate, Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import Footer from '../components/Footer';
 
 function NewConnection() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
         contactNumber: '',
@@ -52,7 +51,6 @@ function NewConnection() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-
         if (!formData.declaration) {
             Swal.fire({
                 title: "OOPS!!!",
@@ -67,23 +65,18 @@ function NewConnection() {
             });
             console.log("Form submitted with data: ", formData);
             setFormSubmitted(true);
-            navigate('/home')
+            navigate('/home');
         }
-
-
-
     };
 
     const { name, contactNumber, email, premise, purpose, permanentAddress, temporaryAddress, isCheckedAddress, load, aadharNumber, declaration } = formData;
 
     return (
         <>
-            
             <Container>
-            <h2 className='text-center mt-3' style={{ color: '#004B73' }}>New Connection Application Form</h2>
+                <h2 className='text-center mt-3' style={{ color: '#004B73' }}>New Connection Application Form</h2>
                 <form onSubmit={handleSubmit}>
                     <div className='border shadow rounded-3 m-3'>
-                        
                         <h5 className='text-center mt-4' style={{ color: '#005C99' }}>Applicant Information</h5>
                         <div className='ms-3 me-3'>
 
@@ -96,6 +89,7 @@ function NewConnection() {
                                     placeholder='example: Shon Mathew'
                                     value={name}
                                     onChange={handleChange}
+                                    required
                                 />
                             </div>
                             <div className='form mt-2 mb-3'>
@@ -108,6 +102,7 @@ function NewConnection() {
                                     placeholder='example: +91 9876543210'
                                     value={contactNumber}
                                     onChange={handleChange}
+                                    required
                                 />
                             </div>
                             <div className='form-group mt-2 mb-3'>
@@ -119,6 +114,7 @@ function NewConnection() {
                                     placeholder='example: shon@gmail.com'
                                     value={email}
                                     onChange={handleChange}
+                                    required
                                 />
                             </div>
                             <div className='form-group mt-2 mb-3'>
@@ -129,6 +125,7 @@ function NewConnection() {
                                     placeholder='Enter Address'
                                     value={permanentAddress}
                                     onChange={handleChange}
+                                    required
                                 ></textarea>
                             </div>
                             <div className='form-check text-danger mt-2 mb-3'>
@@ -149,6 +146,7 @@ function NewConnection() {
                                     placeholder='Enter Address'
                                     value={temporaryAddress}
                                     onChange={handleChange}
+                                    required={!isCheckedAddress} // Only required if checkbox is not checked
                                 ></textarea>
                             </div>
 
@@ -161,6 +159,7 @@ function NewConnection() {
                                     placeholder='Enter Aadhar Number'
                                     value={aadharNumber}
                                     onChange={handleChange}
+                                    required
                                 />
                             </div>
 
@@ -173,6 +172,7 @@ function NewConnection() {
                                     className='form-select  mt-2 mb-3'
                                     value={premise}
                                     onChange={handleChange}
+                                    required
                                 >
                                     <option value="" disabled>Select type of premise</option>
                                     <option value="residential">Residential</option>
@@ -188,6 +188,7 @@ function NewConnection() {
                                         type="text"
                                         className='form-control w-100'
                                         placeholder='Enter your premise type'
+                                        required
                                     />
                                 </div>
                             )}
@@ -198,6 +199,7 @@ function NewConnection() {
                                     className="form-select mt-2 mb-3"
                                     value={purpose}
                                     onChange={handleChange}
+                                    required
                                 >
                                     <option value="" disabled>Select purpose of connection</option>
                                     <option value="residential">Residential</option>
@@ -217,6 +219,7 @@ function NewConnection() {
                                         type="text"
                                         className='form-control w-100'
                                         placeholder='Enter your connection type'
+                                        required
                                     />
                                 </div>
                             )}
@@ -226,6 +229,7 @@ function NewConnection() {
                                     name="premiseAddress"
                                     className='form-control w-100'
                                     placeholder='Enter Address'
+                                    required
                                 ></textarea>
                             </div>
                             <div className='form mt-2 mb-3'>
@@ -237,6 +241,7 @@ function NewConnection() {
                                     placeholder='example: 2kW'
                                     value={load}
                                     onChange={handleChange}
+                                    required
                                 />
                             </div>
 
@@ -248,24 +253,21 @@ function NewConnection() {
                                     name="declaration"
                                     checked={declaration}
                                     onChange={handleChange}
+                                    required
                                 />
-                                <label  className="form-check-label" htmlFor="declaration">I hereby declare that the information provided above is true to the best of my knowledge. I understand that any false information may lead to the rejection of my application.</label>
-                               
+                                <label className="form-check-label" htmlFor="declaration">I hereby declare that the information provided above is true to the best of my knowledge. I understand that any false information may lead to the rejection of my application.</label>
                             </div>
 
                             <div className="text-center mb-4 d-flex flex-column justify-content-center align-items-center">
-                            <Link to={'/terms-and-conditions'} target='_blank' className='ms-1 mb-2' style={{color:'blue', fontStyle:'italic',textDecoration:'none'}}>click to see :"terms & conditions apply"</Link>
+                                <Link to={'/terms-and-conditions'}  className='ms-1 mb-2' style={{color:'blue', fontStyle:'italic',textDecoration:'none'}}>click to see :"terms & conditions apply"</Link>
                                 <button type="submit" className="btn btn-primary login-second-col-btn rounded-5 w-50">
                                     Submit
                                 </button>
                             </div>
-
-
                         </div>
                     </div>
                 </form>
             </Container>
-            
         </>
     );
 }
