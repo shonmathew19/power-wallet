@@ -86,7 +86,7 @@ function TermsAndConditions() {
 
                 <h2 id="privacy-policy">10. Privacy Policy</h2>
                 <p>
-                    Your privacy is important to us. Please review our <Link target='_blank' to={'/privacy-policy'} className='me-1'>Privacy Policy</Link>
+                    Your privacy is important to us. Please review our <Link  to={'/privacy-policy'} className='me-1'>Privacy Policy</Link>
                     Privacy Policy for information on how we
                     collect, use, and protect your personal data.
                 </p>
