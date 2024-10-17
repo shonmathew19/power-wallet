@@ -18,7 +18,7 @@ function TermsAndConditions() {
                 <h2>1. Acceptance of Terms</h2>
                 <p>
                     By accessing or using Power Wallet, you agree to be bound by these Terms
-                    and Conditions and our <Link target='_blank' to={'/privacy-policy'} className='me-1'>Privacy Policy</Link>. If
+                    and Conditions and our <Link to={'/privacy-policy'} className='me-1'>Privacy Policy</Link>. If
                     you do not agree with any part of these terms, you must not use our
                     services.
                 </p>
