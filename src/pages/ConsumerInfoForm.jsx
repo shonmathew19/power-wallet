@@ -29,11 +29,11 @@ function ConsumerInfoForm() {
                                 </tr>
                                 <tr>
                                     <td>Name of the Consumer</td>
-                                    <td>John Doe</td>
+                                    <td>Shon Mathew</td>
                                 </tr>
                                 <tr>
                                     <td>Address</td>
-                                    <td>123 Elm Street, Springfield, IL</td>
+                                    <td>Ernakulam, KL</td>
                                 </tr>
                                 <tr>
                                     <td>Bill Period</td>
@@ -105,7 +105,7 @@ function ConsumerInfoForm() {
                                 </tr>
                                 <tr>
                                     <td>Customer Service Contact</td>
-                                    <td>1-800-555-0199</td>
+                                    <td>1234567809</td>
                                 </tr>
                                 <tr>
                                     <td>Support Website & Email</td>
