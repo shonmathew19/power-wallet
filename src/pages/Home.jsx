@@ -22,7 +22,7 @@ function Home({ setRole }) {
             });
             return;
         }
-        if (email === 'admin' && password === 'admin') {
+        if (email === 'admin@123' && password === 'admin') {
             userRole = 'admin';
             Swal.fire({
                 title: "",
@@ -32,7 +32,9 @@ function Home({ setRole }) {
             localStorage.setItem('role', userRole);
             navigate('/home');
             setIsLogin(true)
-        } else if(email === 'user' && password === 'user') {
+            setEmail('')
+            setPassword('')
+        } else if(email === 'user@123' && password === 'user') {
             userRole = 'user';
             Swal.fire({
                 title: "",
@@ -42,6 +44,8 @@ function Home({ setRole }) {
             localStorage.setItem('role', userRole);
             navigate('/home');
             setIsLogin(true)
+            setEmail('')
+            setPassword('')
         }else{
             Swal.fire({
                 title: "SORRY",

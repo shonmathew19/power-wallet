@@ -28,7 +28,7 @@ function Login({ register, setRole}) {
         }
 
         let role = null;
-        if (email === 'admin' && password === 'admin') {
+        if (email === 'admin@123' && password === 'admin') {
             role = 'admin';
             Swal.fire({
                 title: "",
@@ -36,8 +36,11 @@ function Login({ register, setRole}) {
                 icon: "success"
             });
             navigate('/home');
+            setEmail('')
+            setPassword('')
+
             
-        } else if(email === 'user' && password === 'user') {
+        } else if(email === 'user@123' && password === 'user') {
             role = 'user';
             Swal.fire({
                 title: "",
@@ -45,6 +48,9 @@ function Login({ register, setRole}) {
                 icon: "success"
             });
             navigate('/home');
+            setEmail('')
+            setPassword('')
+            
     
         }else{
             Swal.fire({
@@ -58,6 +64,7 @@ function Login({ register, setRole}) {
         localStorage.setItem('role', role);
 
         console.log(role);
+        
     };
 
     return (
