@@ -28,7 +28,7 @@ function Login({ register, setRole}) {
         }
 
         let role = null;
-        if (email === 'admin@123' && password === 'admin') {
+        if (email === 'admin' && password === 'admin') {
             role = 'admin';
             Swal.fire({
                 title: "",
@@ -37,7 +37,7 @@ function Login({ register, setRole}) {
             });
             navigate('/home');
             
-        } else {
+        } else if(email === 'user' && password === 'user') {
             role = 'user';
             Swal.fire({
                 title: "",
@@ -46,6 +46,12 @@ function Login({ register, setRole}) {
             });
             navigate('/home');
     
+        }else{
+            Swal.fire({
+                title: "",
+                text: "Please check the user name and password!",
+                icon: "warning"
+            });
         }
 
         setRole(role);

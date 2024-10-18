@@ -22,7 +22,7 @@ function Home({ setRole }) {
             });
             return;
         }
-        if (username === 'admin@123' && password === 'admin') {
+        if (username === 'admin' && password === 'admin') {
             userRole = 'admin';
             Swal.fire({
                 title: "",
@@ -32,7 +32,7 @@ function Home({ setRole }) {
             localStorage.setItem('role', userRole);
             navigate('/home');
             setIsLogin(true)
-        } else {
+        } else if(username === 'user' && password === 'user') {
             userRole = 'user';
             Swal.fire({
                 title: "",
@@ -42,6 +42,12 @@ function Home({ setRole }) {
             localStorage.setItem('role', userRole);
             navigate('/home');
             setIsLogin(true)
+        }else{
+            Swal.fire({
+                title: "SORRY",
+                text: "Please check the user name and password!",
+                icon: "warning"
+            });
         }
 
         setRole(userRole);
