@@ -42,14 +42,14 @@ function Header({ role, setRole, isLogin, setIsLogin }) {
                 )}
                
 
-                <Nav.Link as={Link} className='navbar-items'>Complaint Status</Nav.Link>
+                <Nav.Link as={Link} disabled className='navbar-items'>Complaint Status</Nav.Link>
                 <Nav.Link as={Link} to={'/new-connection'} className='navbar-items'>New Connection</Nav.Link>
-                <Nav.Link as={Link} className='navbar-items'>User Guide</Nav.Link>
+                <Nav.Link as={Link}  disabled className='navbar-items'>User Guide</Nav.Link>
               </>
             ) : (
               <>
-                <Nav.Link as={Link} to={'/dashboard'} className='navbar-items'>Dashboard</Nav.Link>
-                <Nav.Link as={Link} className='navbar-items'>Complaint Status</Nav.Link>
+                <Nav.Link as={Link} to={'/dashboard'} disabled className='navbar-items'>Dashboard</Nav.Link>
+                <Nav.Link as={Link} disabled className='navbar-items'>Complaint Status</Nav.Link>
                 <Nav.Link as={Link} to={'/new-connection'} className='navbar-items'>New Connection</Nav.Link>
                 <Nav.Link as={Link} to={'/admin-page-consumer-info'} className='navbar-items'>Consumer Info</Nav.Link>
               </>

@@ -10,7 +10,7 @@ const AdminDashboard = () => {
             <div className="card-body">
               <h5 className="card-title">Manage Users</h5>
               <p className="card-text">Add, edit, or remove users from the system.</p>
-              <a href="/admin/manage-users" className="btn btn-primary">Manage Users</a>
+              <a href="/admin/manage-users" className="btn btn-primary disabled" >Manage Users</a>
             </div>
           </div>
         </div>
@@ -20,7 +20,7 @@ const AdminDashboard = () => {
             <div className="card-body">
               <h5 className="card-title">Set Unit Prices</h5>
               <p className="card-text">Modify electricity unit prices and other fees.</p>
-              <a href="/admin/set-prices" className="btn btn-secondary">Set Prices</a>
+              <a href="/admin/set-prices" className="btn btn-secondary disabled">Set Prices</a>
             </div>
           </div>
         </div>
@@ -30,7 +30,7 @@ const AdminDashboard = () => {
             <div className="card-body">
               <h5 className="card-title">View Reports</h5>
               <p className="card-text">Generate reports on payments, users, and system performance.</p>
-              <a href="/admin/reports" className="btn btn-danger">View Reports</a>
+              <a href="/admin/reports" className="btn btn-danger disabled">View Reports</a>
             </div>
           </div>
         </div>
