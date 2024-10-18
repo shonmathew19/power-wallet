@@ -49,7 +49,7 @@ function Login({ register, setRole}) {
         }else{
             Swal.fire({
                 title: "",
-                text: "Please check the user name and password!",
+                text: "Please check the email and password!",
                 icon: "warning"
             });
         }

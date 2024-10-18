@@ -6,7 +6,7 @@ import AdminDashboard from '../pages/AdminDashboard';
 import UserDashboard from './UserDashboard';
 
 function Home({ setRole }) {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
     const storedRole = localStorage.getItem('role');
@@ -14,7 +14,7 @@ function Home({ setRole }) {
     const handleLogin = (e) => {
         e.preventDefault();
         let userRole = null;
-        if (!username || !password) {
+        if (!email || !password) {
             Swal.fire({
                 title: "Incomplete Form",
                 text: "Please fill out both username and password fields.",
@@ -22,7 +22,7 @@ function Home({ setRole }) {
             });
             return;
         }
-        if (username === 'admin' && password === 'admin') {
+        if (email === 'admin' && password === 'admin') {
             userRole = 'admin';
             Swal.fire({
                 title: "",
@@ -32,7 +32,7 @@ function Home({ setRole }) {
             localStorage.setItem('role', userRole);
             navigate('/home');
             setIsLogin(true)
-        } else if(username === 'user' && password === 'user') {
+        } else if(email === 'user' && password === 'user') {
             userRole = 'user';
             Swal.fire({
                 title: "",
@@ -45,7 +45,7 @@ function Home({ setRole }) {
         }else{
             Swal.fire({
                 title: "SORRY",
-                text: "Please check the user name and password!",
+                text: "Please check the email and password!",
                 icon: "warning"
             });
         }
@@ -86,10 +86,10 @@ function Home({ setRole }) {
                                     <form onSubmit={handleLogin}>
                                         <input
                                             type="text"
-                                            placeholder="Username"
+                                            placeholder="Email"
                                             className="form-control mt-3 w-100"
-                                            value={username}
-                                            onChange={(e) => setUsername(e.target.value)}
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
                                         />
                                         <input
                                             type="password"
