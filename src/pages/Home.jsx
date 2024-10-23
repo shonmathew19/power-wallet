@@ -1,69 +1,15 @@
-import React, { useState, useEffect } from 'react';
+
 import { Link, useNavigate } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
-import Swal from 'sweetalert2';
+
 import AdminDashboard from '../pages/AdminDashboard';
 import UserDashboard from './UserDashboard';
 
-function Home({ setRole }) {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const navigate = useNavigate();
-    const storedRole = localStorage.getItem('role');
 
-    const handleLogin = (e) => {
-        e.preventDefault();
-        let userRole = null;
-        if (!email || !password) {
-            Swal.fire({
-                title: "Incomplete Form",
-                text: "Please fill out both username and password fields.",
-                icon: "warning"
-            });
-            return;
-        }
-        if (email === 'admin@123' && password === 'admin') {
-            userRole = 'admin';
-            Swal.fire({
-                title: "",
-                text: "Successfully logged in as admin!",
-                icon: "success"
-            });
-            localStorage.setItem('role', userRole);
-            navigate('/home');
-            setIsLogin(true)
-            setEmail('')
-            setPassword('')
-        } else if(email === 'user@123' && password === 'user') {
-            userRole = 'user';
-            Swal.fire({
-                title: "",
-                text: "Successfully logged in as user!",
-                icon: "success"
-            });
-            localStorage.setItem('role', userRole);
-            navigate('/home');
-            setIsLogin(true)
-            setEmail('')
-            setPassword('')
-        }else{
-            Swal.fire({
-                title: "SORRY",
-                text: "Please check the email and password!",
-                icon: "warning"
-            });
-        }
+function Home() {
 
-        setRole(userRole);
-    };
-
-    useEffect(() => {
-        const storedRole = localStorage.getItem('role');
-        if (storedRole) {
-            setRole(storedRole);
-        }
-    }, [storedRole]);
-
+    const activeRole = sessionStorage.getItem('role')
+    console.log('role in home page*********', activeRole)
     return (
         <>
             <marquee behavior="scroll" direction="left" scrollamount="5">
@@ -80,48 +26,27 @@ function Home({ setRole }) {
                 </Col>
 
                 <Col md={6} className="d-flex justify-content-center align-items-center">
-                    {storedRole === null ? (
-                        <div className="mt-3 border border-3 rounded-3 shadow p-5">
-                            <div className="d-flex flex-column align-items-center justify-content-center text-center">
-                                <h1 className="rounded-2 p-2" style={{ backgroundColor: 'lightblue', color: '#001F3F' }}>
-                                    Login to Your Account
-                                </h1>
-                                <div className='w-100'>
-                                    <form onSubmit={handleLogin}>
-                                        <input
-                                            type="text"
-                                            placeholder="Email"
-                                            className="form-control mt-3 w-100"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                        />
-                                        <input
-                                            type="password"
-                                            className="form-control mt-3 w-100"
-                                            placeholder="Password"
-                                            value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
-                                        />
-                                        <button type="submit" className="btn btn-light text-light mt-4 mb-3 w-50 rounded-5 login-second-col-btn">
-                                            Sign In
-                                        </button>
-                                    </form>
-                                </div>
+                    {
+                        activeRole == null &&
+                        <>
+                            <div className='border border-2 p-4'>
 
-                                <div className="ms-1 text-light">
-                                    Not registered? Click
-                                    <Link to="/register" style={{ textDecoration: 'none', color: '#ff5722' }}>
-                                        <span> here</span>
-                                    </Link>
-                                    {' '}to register.
-                                </div>
+                            <p className='mt-3 text-center'style={{fontSize:"2em"}}>Already a user? Click here to <Link style={{ textDecoration: 'none', color: '#ff5722' }} className='ms-1' to={'/login'}>Login</Link></p>
                             </div>
-                        </div>
-                    ) : storedRole === 'admin' ? (
-                        <AdminDashboard />
-                    ) : (
-                        <UserDashboard />
-                    )}
+                        </>
+                    }
+                    {
+                        activeRole == 'admin' ?
+                            <AdminDashboard />
+                            :
+                            activeRole == 'user' ?
+                                <UserDashboard />
+                                :
+                                null
+
+                    }
+
+
                 </Col>
             </Row>
         </>

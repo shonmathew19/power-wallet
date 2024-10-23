@@ -28,7 +28,7 @@ function Footer() {
             <h5 className="text-uppercase footer-heading">Support</h5>
             <ul className="list-unstyled mb-0">
               <li><a href="#!" className="text-white">Contact Us</a></li>
-              <li><a href="#!" className="text-white">Help Center</a></li>
+              <li ><a href="#!" className="text-white">Help Center</a></li>
               <li><a href="#!" className="text-white">FAQs</a></li>
             </ul>
           </Col>

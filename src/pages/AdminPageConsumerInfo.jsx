@@ -8,7 +8,7 @@ function AdminPageConsumerInfo() {
         <>
        <Container>
        <h2 class="mb-2 mt-3 text-center" style={{ color: '#004B73' }}>Admin Consumer Information Form</h2>
-            <div class="border shadow rounded-3 m-5 ">
+            <div class="border shadow rounded-3 m-3 ">
                 
                
                 <form className=' w-75 mx-auto'>
@@ -16,6 +16,10 @@ function AdminPageConsumerInfo() {
                     <div class="form-group">
                         <label for="consumerNumber">Consumer Number</label>
                         <input type="text" class="form-control " id="consumerNumber" placeholder="Enter Consumer Number" />
+                        
+                    </div>
+                    <div className='d-flex justify-content-center'>
+                    <button className='btn btn-success mt-3 mb-3 w-50 '>Verify consumer</button>
                     </div>
                     <div class="form-group">
                         <label for="consumerName">Name of the Consumer</label>

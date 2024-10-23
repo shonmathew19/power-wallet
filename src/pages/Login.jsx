@@ -1,23 +1,26 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { roleContext} from '../context/RoleContext';
 
-function Login({ register, setRole}) {
+function Login({ register }) {
     // Define state variables for username, password, and email
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const navigate = useNavigate();
-   
+    const { role, setRole } = useContext(roleContext);
+ 
+
     const handleLogin = (e) => {
         e.preventDefault();
 
-        console.log("Username: ", username);
-        console.log("Password: ", password);
-        console.log("Email: ", email);
+        // console.log("Username: ", username);
+        // console.log("Password: ", password);
+        // console.log("Email: ", email);
         if (!email || !password) {
             Swal.fire({
                 title: "Incomplete Form",
@@ -35,24 +38,28 @@ function Login({ register, setRole}) {
                 text: "Successfully logged in as admin!",
                 icon: "success"
             });
+            setRole("admin")
+            
             navigate('/home');
             setEmail('')
             setPassword('')
-
             
-        } else if(email === 'user@123' && password === 'user') {
+
+
+        } else if (email === 'user@123' && password === 'user') {
             role = 'user';
             Swal.fire({
                 title: "",
                 text: "Successfully logged in as user!",
                 icon: "success"
             });
+            setRole("user")
             navigate('/home');
             setEmail('')
             setPassword('')
-            
-    
-        }else{
+
+
+        } else {
             Swal.fire({
                 title: "",
                 text: "Please check the email and password!",
@@ -60,11 +67,8 @@ function Login({ register, setRole}) {
             });
         }
 
-        setRole(role);
-        localStorage.setItem('role', role);
-
-        console.log(role);
-        
+        sessionStorage.setItem('role',role)
+       
     };
 
     return (
@@ -93,12 +97,12 @@ function Login({ register, setRole}) {
                             register ? (
                                 <>
                                     <h1>Register Your Account</h1>
-                                    <input 
-                                        type="text" 
-                                        placeholder='Username' 
-                                        className='form-control' 
-                                        value={username} 
-                                        onChange={(e) => setUsername(e.target.value)} 
+                                    <input
+                                        type="text"
+                                        placeholder='Username'
+                                        className='form-control'
+                                        value={username}
+                                        onChange={(e) => setUsername(e.target.value)}
                                     />
                                 </>
                             ) : (
