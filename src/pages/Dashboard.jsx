@@ -1,5 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { LineChart } from '@mui/x-charts/LineChart';
+
+import { PieChart } from '@mui/x-charts/PieChart';
 
 const Dashboard = () => {
   return (
@@ -9,13 +12,13 @@ const Dashboard = () => {
         <nav className="col-md-3 col-lg-2 d-md-block bg-light sidebar mt-5  "  >
           <div className="position-sticky">
             <ul className="nav flex-column dashboard-sidebar " >
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <a className="nav-link active" href="#">
                   Dashboard
                 </a>
-              </li>
+              </li> */}
+
               <li className="nav-item">
-             
                 <Link className="nav-link" to={'/set-unit-prices'} >
                   Add Unit Prices
                 </Link>
@@ -35,10 +38,45 @@ const Dashboard = () => {
         </nav>
 
         {/* Main Content */}
+
         <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+
           <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 className="h2">Dashboard</h1>
+
             <button className="btn btn-primary">Add New</button>
+          </div>
+          <div className='d-flex'>
+            <div className='d-flex flex-column m-3'>
+              <h3 className='text-center'>Total units consumed</h3>
+              <LineChart
+                xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
+                series={[
+                  {
+                    data: [2, 5.5, 2, 8.5, 1.5, 5],
+                  },
+                ]}
+                width={500}
+                height={300}
+              />
+            </div>
+          <div className='d-flex flex-column m-3'>
+            <h3 className='text-center'>Total number of consumers</h3>
+          <PieChart
+              series={[
+                {
+                  data: [
+                    { id: 0, value: 10, label: 'series A' },
+                    { id: 1, value: 15, label: 'series B' },
+                    { id: 2, value: 20, label: 'series C' },
+                  ],
+                },
+              ]}
+              width={400}
+              height={200}
+            />
+          </div>
           </div>
 
           <div className="container">
@@ -50,7 +88,7 @@ const Dashboard = () => {
                     <p className="card-text">
                       Easily manage your unit prices for different services.
                     </p>
-                 
+
                     <Link to={'/set-unit-prices'} className='btn btn-success'> Go to Unit Prices</Link>
 
                   </div>
@@ -98,8 +136,10 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
+
         </main>
       </div>
     </div>
