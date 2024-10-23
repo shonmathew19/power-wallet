@@ -19,7 +19,7 @@ function SetUnitPrices() {
     };
 
     return (
-        <div className="container mt-5 mb-3 w-50">
+        <div className="container mt-5 mb-3 ">
             <div className="card shadow-lg">
                 <div className="card-body">
                     <h2 className="card-title text-center mb-4" style={{ color: '#004B73' }}>Update Unit Price & Fees</h2>
