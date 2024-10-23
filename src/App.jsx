@@ -15,6 +15,9 @@ import { useState } from 'react'
 import Dashboard from './pages/Dashboard'
 import About from './pages/About'
 import ComplaintForm from './pages/ComplaintForm'
+import SetUnitPrices from './components/SetUnitPrices'
+import ManageUsers from './components/ManageUsers'
+import ViewReports from './components/ViewReports'
 
 
 
@@ -38,6 +41,9 @@ function App() {
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path='/about' element={<About />} />
         <Route path='/complaint-form' element={<ComplaintForm />} />
+        <Route path='/set-unit-prices' element={<SetUnitPrices />} />
+        <Route path='/manage-users' element={<ManageUsers/>} />\
+        <Route path='/view-reports' element={<ViewReports/>} />
 
       </Routes>
       <Footer />

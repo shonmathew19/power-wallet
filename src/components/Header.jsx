@@ -59,9 +59,9 @@ function Header() {
               {
                 activeRole == 'admin' &&
                 <>
-                  <Nav.Link as={Link} to={'/dashboard'} disabled className='navbar-items'>Dashboard</Nav.Link>
+                  <Nav.Link as={Link} to={'/dashboard'}  className='navbar-items'>Dashboard</Nav.Link>
                   <Nav.Link as={Link} disabled className='navbar-items'>Complaint requests</Nav.Link>
-                  <Nav.Link as={Link} to={'/new-connection'} className='navbar-items'>New Connection</Nav.Link>
+                
                   <Nav.Link as={Link} to={'/admin-page-consumer-info'} className='navbar-items'>Consumer Info</Nav.Link>
                 </>
               }

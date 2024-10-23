@@ -185,7 +185,10 @@ footer a:hover {
   overflow: auto;
 }
 
-
+.dashboard-sidebar li:hover {
+ background-color: #a9abed;
+ border-radius: 5px;
+}
 
 
 
