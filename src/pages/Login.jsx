@@ -4,23 +4,61 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { roleContext} from '../context/RoleContext';
+import { roleContext } from '../context/RoleContext';
+import { loginApi, registerApi } from '../../services/allApi';
 
 function Login({ register }) {
     // Define state variables for username, password, and email
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [email, setEmail] = useState('');
+
+    const [userData, setUserData] = useState({
+        username: '',
+        email: '',
+        password: ''
+    })
+
     const navigate = useNavigate();
     const { role, setRole } = useContext(roleContext);
- 
 
-    const handleLogin = (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
+        const { username, email, password } = userData;
+        if (!username || !email || !password) {
+            Swal.fire({
+                title: "Incomplete Form",
+                text: "Please fill all fields.",
+                icon: "warning"
+            });
+        } else {
+            const result = await registerApi(userData)
 
-        // console.log("Username: ", username);
-        // console.log("Password: ", password);
-        // console.log("Email: ", email);
+            if (result.status === 201) {
+                setUserData({
+                    username: '',
+                    email: '',
+                    password: ''
+                })
+                Swal.fire({
+                    title: "",
+                    text: `"${result.data.data.username}" registered successfully`,
+                    icon: "success"
+                });
+                navigate('/login')
+            }else if(result.status = 401){
+                Swal.fire({
+                    title: "SORRY",
+                    text: `Something went wrong`,
+                    icon: "error"
+                });
+            }
+
+
+        }
+    }
+
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        const { username, email, password } = userData;
         if (!email || !password) {
             Swal.fire({
                 title: "Incomplete Form",
@@ -28,47 +66,39 @@ function Login({ register }) {
                 icon: "warning"
             });
             return;
-        }
-
-        let role = null;
-        if (email === 'admin@123' && password === 'admin') {
-            role = 'admin';
-            Swal.fire({
-                title: "",
-                text: "Successfully logged in as admin!",
-                icon: "success"
-            });
-            setRole("admin")
-            
-            navigate('/home');
-            setEmail('')
-            setPassword('')
-            
-
-
-        } else if (email === 'user@123' && password === 'user') {
-            role = 'user';
-            Swal.fire({
-                title: "",
-                text: "Successfully logged in as user!",
-                icon: "success"
-            });
-            setRole("user")
-            navigate('/home');
-            setEmail('')
-            setPassword('')
-
-
         } else {
-            Swal.fire({
-                title: "",
-                text: "Please check the email and password!",
-                icon: "warning"
-            });
+            const result = await loginApi(userData);
+            if (result.status === 201) {
+                setUserData({
+                    username: '',
+                    email: '',
+                    password: ''
+                })
+                const role = result.data.data.accountType;
+                if (role === 'user') {
+                    sessionStorage.setItem('role', role)
+                } else if (role === 'admin') {
+                    sessionStorage.setItem('role', role)
+                } else {
+                    sessionStorage.setItem('role', null)
+                }
+                Swal.fire({
+                    title: "",
+                    text: `"${result.data.data.username}" logged in successfully`,
+                    icon: "success"
+                });
+
+                navigate('/home')
+            } else {
+                Swal.fire({
+                    title: "error",
+                    text: "Username or password is incorrect",
+                    icon: "error"
+                });
+            }
+
         }
 
-        sessionStorage.setItem('role',role)
-       
     };
 
     return (
@@ -101,8 +131,8 @@ function Login({ register }) {
                                         type="text"
                                         placeholder='Username'
                                         className='form-control'
-                                        value={username}
-                                        onChange={(e) => setUsername(e.target.value)}
+                                        value={userData.username}
+                                        onChange={(e) => setUserData({ ...userData, username: e.target.value })}
                                     />
                                 </>
                             ) : (
@@ -115,20 +145,20 @@ function Login({ register }) {
                             type="email"
                             className="form-control mt-3"
                             placeholder="Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={userData.email}
+                            onChange={(e) => setUserData({ ...userData, email: e.target.value })}
                         />
                         <input
                             type="password"
                             className="form-control mt-3"
                             placeholder="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            value={userData.password}
+                            onChange={(e) => setUserData({ ...userData, password: e.target.value })}
                         />
                         {
                             register ? (
                                 <>
-                                    <button className="btn btn-success mt-4 mb-3 w-50 rounded-5 login-second-col-btn">Sign Up</button>
+                                    <button className="btn btn-success mt-4 mb-3 w-50 rounded-5 login-second-col-btn" onClick={handleRegister}>Sign Up</button>
                                     <p className='mt-3 text-center'>Already a user? Click here to <Link style={{ textDecoration: 'none', color: '#ff5722' }} className='ms-1' to={'/login'}>Login</Link></p>
                                 </>
                             ) : (

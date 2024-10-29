@@ -12,11 +12,11 @@ const Dashboard = () => {
         <nav className="col-md-3 col-lg-2 d-md-block bg-light sidebar mt-5  "  >
           <div className="position-sticky">
             <ul className="nav flex-column dashboard-sidebar " >
-              {/* <li className="nav-item">
-                <a className="nav-link active" href="#">
-                  Dashboard
-                </a>
-              </li> */}
+              <li className="nav-item">
+                <Link className="nav-link active" to={'/all-consumers'}>
+                  <span className='text-success fw-bolder'>All CONSUMERS</span>
+                </Link>
+              </li>
 
               <li className="nav-item">
                 <Link className="nav-link" to={'/set-unit-prices'} >

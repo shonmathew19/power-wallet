@@ -1,136 +1,206 @@
 import React from 'react'
 import { Container } from 'react-bootstrap'
+import { useState } from 'react';
+import { consumerInfoApi } from '../../services/allApi';
+
 
 function AdminPageConsumerInfo() {
 
+    const [consumerInfo, setConsumerInfo] = useState({
+        consumerNumber: "",
+        consumerName:"",
+        consumerAddress:"",
+        billNumber:"",
+        dateOfBillGeneration:"",
+        meterNumber:"",
+        previousMeterReading:"",
+        currentMeterReading:"",
+        meterType:"",
+        unitsConsumed:"",
+        tariffRate:"",
+        fixedCharges:"",
+        variableCharges:"",
+        additionalCharges:"",
+        taxes:"",
+        totalAmountPayable:"",
+        dueDate:"",
+        contactNumbers:"",
+        websiteOrEmail:"",
+        additionalNotes:""
+    })
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log(consumerInfo);
+        const result = await consumerInfoApi(consumerInfo)
+
+        console.log('handle submit', result)
+
+
+    };
+
+
 
     return (
+
         <>
-       <Container>
-       <h2 class="mb-2 mt-3 text-center" style={{ color: '#004B73' }}>Admin Consumer Information Form</h2>
-            <div class="border shadow rounded-3 m-3 ">
-                
-               
-                <form className=' w-75 mx-auto'>
-                    <h4 class="text-center mt-2" style={{ color: '#005C99' }}>Consumer Information</h4>
-                    <div class="form-group">
-                        <label for="consumerNumber">Consumer Number</label>
-                        <input type="text" class="form-control " id="consumerNumber" placeholder="Enter Consumer Number" />
-                        
-                    </div>
-                    <div className='d-flex justify-content-center'>
-                    <button className='btn btn-success mt-3 mb-3 w-50 '>Verify consumer</button>
-                    </div>
-                    <div class="form-group">
-                        <label for="consumerName">Name of the Consumer</label>
-                        <input type="text" class="form-control" id="consumerName" placeholder="Enter Name" />
-                    </div>
-                    <div class="form-group">
-                        <label for="consumerAddress">Address of the Consumer</label>
-                        <input type="text" class="form-control" id="consumerAddress" placeholder="Enter Address" />
-                    </div>
+            <Container>
+                <h2 class="mb-2 mt-3 text-center" style={{ color: '#004B73' }}>Admin Consumer Information Form</h2>
+                <div class="border shadow rounded-3 m-3 ">
 
-                    <h4 class="mt-4 text-center" style={{ color: '#005C99' }}>Billing Information</h4>
-                    <div class="form-group">
-                        <label for="billPeriodFrom">Bill Period From</label>
-                        <input type="date" class="form-control" id="billPeriodFrom" />
-                    </div>
-                    <div class="form-group">
-                        <label for="billPeriodTo">Bill Period To</label>
-                        <input type="date" class="form-control" id="billPeriodTo" />
-                    </div>
-                    <div class="form-group">
-                        <label for="billNumber">Bill Number</label>
-                        <input type="text" class="form-control" id="billNumber" placeholder="Enter Bill Number" />
-                    </div>
-                    <div class="form-group">
-                        <label for="billDate">Date of Bill Generation</label>
-                        <input type="date" class="form-control" id="billDate" />
-                    </div>
 
-                    <h4 class="mt-4 text-center" style={{ color: '#005C99' }}>Meter Details</h4>
-                    <div class="form-group">
-                        <label for="meterNumber">Meter Number</label>
-                        <input type="text" class="form-control" id="meterNumber" placeholder="Enter Meter Number" />
-                    </div>
-                    <div class="form-group">
-                        <label for="previousReading">Previous Meter Reading</label>
-                        <input type="number" class="form-control" id="previousReading" placeholder="Enter Previous Reading" />
-                    </div>
-                    <div class="form-group">
-                        <label for="currentReading">Current Meter Reading</label>
-                        <input type="number" class="form-control" id="currentReading" placeholder="Enter Current Reading" />
-                    </div>
-                    <div class="form-group">
-                        <label for="meterType">Type of Meter</label>
-                        <select class="form-control" id="meterType">
-                            <option>Choose...</option>
-                            <option value="digital">Digital</option>
-                            <option value="analog">Analog</option>
-                        </select>
-                    </div>
+                    <form className="w-75 mx-auto" onSubmit={handleSubmit}>
+                        <h4 className="text-center mt-2" style={{ color: '#005C99' }}>Consumer Information</h4>
 
-                    <h4 class="mt-4 text-center" style={{ color: '#005C99' }}>Usage Details</h4>
-                    <div class="form-group">
-                        <label for="unitsConsumed">Units Consumed (in kWh)</label>
-                        <input type="number" class="form-control" id="unitsConsumed" placeholder="Enter Units Consumed" />
-                    </div>
-                    <div class="form-group">
-                        <label for="tariffRate">Tariff Rate (cost per unit)</label>
-                        <input type="number" class="form-control" id="tariffRate" placeholder="Enter Tariff Rate" />
-                    </div>
+                        <div className="form-group">
+                            <label htmlFor="consumerNumber">Consumer Number</label>
+                            <input type="text" className="form-control" id="consumerNumber" placeholder="Enter Consumer Number"
+                                value={consumerInfo.consumerNumber} onChange={(e) => setConsumerInfo({ ...consumerInfo, consumerNumber: e.target.value })} />
+                        </div>
 
-                    <h4 class="mt-4 text-center" style={{ color: '#005C99' }}>Charges</h4>
-                    <div class="form-group">
-                        <label for="fixedCharges">Fixed Charges</label>
-                        <input type="number" class="form-control" id="fixedCharges" placeholder="Enter Fixed Charges" />
-                    </div>
-                    <div class="form-group">
-                        <label for="variableCharges">Variable Charges</label>
-                        <input type="number" class="form-control" id="variableCharges" placeholder="Enter Variable Charges" />
-                    </div>
-                    <div class="form-group">
-                        <label for="additionalCharges">Additional Charges</label>
-                        <input type="number" class="form-control" id="additionalCharges" placeholder="Enter Additional Charges" />
-                    </div>
-                    <div class="form-group">
-                        <label for="taxes">Taxes</label>
-                        <input type="number" class="form-control" id="taxes" placeholder="Enter Taxes" />
-                    </div>
+                        <div className="form-group">
+                            <label htmlFor="consumerName">Name of the Consumer</label>
+                            <input type="text" className="form-control" id="consumerName" placeholder="Enter Name"
+                            value={consumerInfo.consumerName} onChange={(e) => setConsumerInfo({ ...consumerInfo, consumerName: e.target.value })} />
+                        </div>
 
-                    <h4 class="mt-4 text-center" style={{ color: '#005C99' }}>Total Amount Due</h4>
-                    <div class="form-group">
-                        <label for="totalAmount">Total Amount Payable</label>
-                        <input type="number" class="form-control" id="totalAmount" placeholder="Enter Total Amount" />
-                    </div>
-                    <div class="form-group">
-                        <label for="dueDate">Due Date for Payment</label>
-                        <input type="date" class="form-control" id="dueDate" />
-                    </div>
+                        <div className="form-group">
+                            <label htmlFor="consumerAddress">Address of the Consumer</label>
+                            <input type="text" className="form-control" id="consumerAddress" placeholder="Enter Address" 
+                            value={consumerInfo.consumerAddress} onChange={(e) => setConsumerInfo({ ...consumerInfo, consumerAddress: e.target.value })}/>
+                        </div>
 
-                    <h4 class="mt-4 text-center" style={{ color: '#005C99' }}>Customer Service Information</h4>
-                    <div class="form-group">
-                        <label for="contactNumbers">Contact Numbers</label>
-                        <input type="text" class="form-control" id="contactNumbers" placeholder="Enter Contact Numbers" />
-                    </div>
-                    <div class="form-group">
-                        <label for="websiteEmail">Website and Email for Customer Support</label>
-                        <input type="text" class="form-control" id="websiteEmail" placeholder="Enter Website and Email" />
-                    </div>
+                        {/* Billing Information Section */}
+                        <h4 className="mt-4 text-center" style={{ color: '#005C99' }}>Billing Information</h4>
 
-                    <h4 class="mt-4 text-center" style={{ color: '#005C99' }}>Additional Notes</h4>
-                    <div class="form-group">
-                        <label for="additionalNotes">Any Notices or Additional Information</label>
-                        <textarea class="form-control" id="additionalNotes" rows="3" placeholder="Enter Additional Notes"></textarea>
-                    </div>
-                    <div className='text-center mt-3 mb-4 d-flex flex-column justify-content-center align-items-center'>
-                        <button type="submit" className="btn btn-primary login-second-col-btn rounded-5 w-50">Submit</button>
-                    </div>
+                        <div className="form-group">
+                            <label htmlFor="billNumber">Bill Number</label>
+                            <input type="text" className="form-control" id="billNumber" placeholder="Enter Bill Number" 
+                            value={consumerInfo.billNumber} onChange={(e) => setConsumerInfo({ ...consumerInfo, billNumber: e.target.value })}/>
+                        </div>
 
-                </form>
+                        <div className="form-group">
+                            <label htmlFor="billDate">Date of Bill Generation</label>
+                            <input type="date" className="form-control" id="billDate"
+                            value={consumerInfo.dateOfBillGeneration} onChange={(e) => setConsumerInfo({ ...consumerInfo, dateOfBillGeneration: e.target.value })}/>
+                        </div>
+
+                        {/* Meter Details Section */}
+                        <h4 className="mt-4 text-center" style={{ color: '#005C99' }}>Meter Details</h4>
+
+                        <div className="form-group">
+                            <label htmlFor="meterNumber">Meter Number</label>
+                            <input type="text" className="form-control" id="meterNumber" placeholder="Enter Meter Number"
+                            value={consumerInfo.meterNumber} onChange={(e) => setConsumerInfo({ ...consumerInfo, meterNumber: e.target.value })} />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="previousReading">Previous Meter Reading</label>
+                            <input type="number" className="form-control" id="previousReading" placeholder="Enter Previous Reading"
+                            value={consumerInfo.previousMeterReading} onChange={(e) => setConsumerInfo({ ...consumerInfo, previousMeterReading: e.target.value })} />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="currentReading">Current Meter Reading</label>
+                            <input type="number" className="form-control" id="currentReading" placeholder="Enter Current Reading"
+                            value={consumerInfo.currentMeterReading} onChange={(e) => setConsumerInfo({ ...consumerInfo, currentMeterReading: e.target.value })} />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="meterType">Type of Meter</label>
+                            <select className="form-control" id="meterType" value={consumerInfo.meterType} onChange={(e) => setConsumerInfo({ ...consumerInfo, meterType: e.target.value })}>
+                                <option>Choose...</option>
+                                <option value="digital">Digital</option>
+                                <option value="analog">Analog</option>
+                            </select>
+                        </div>
+
+                        {/* Usage Details Section */}
+                        <h4 className="mt-4 text-center" style={{ color: '#005C99' }}>Usage Details</h4>
+
+                        <div className="form-group">
+                            <label htmlFor="unitsConsumed">Units Consumed (in kWh)</label>
+                            <input type="number" className="form-control" id="unitsConsumed" placeholder="Enter Units Consumed"
+                            value={consumerInfo.unitsConsumed} onChange={(e) => setConsumerInfo({ ...consumerInfo, unitsConsumed: e.target.value })} />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="tariffRate">Tariff Rate (cost per unit)</label>
+                            <input type="number" className="form-control" id="tariffRate" placeholder="Enter Tariff Rate"
+                            value={consumerInfo.tariffRate} onChange={(e) => setConsumerInfo({ ...consumerInfo, tariffRate: e.target.value })}/>
+                        </div>
+
+                        {/* Charges Section */}
+                        <h4 className="mt-4 text-center" style={{ color: '#005C99' }}>Charges</h4>
+
+                        <div className="form-group">
+                            <label htmlFor="fixedCharges">Fixed Charges</label>
+                            <input type="number" className="form-control" id="fixedCharges" placeholder="Enter Fixed Charges" 
+                            value={consumerInfo.fixedCharges} onChange={(e) => setConsumerInfo({ ...consumerInfo, fixedCharges: e.target.value })}/>
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="variableCharges">Variable Charges</label>
+                            <input type="number" className="form-control" id="variableCharges" placeholder="Enter Variable Charges"
+                            value={consumerInfo.variableCharges} onChange={(e) => setConsumerInfo({ ...consumerInfo, variableCharges: e.target.value })}/>
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="additionalCharges">Additional Charges</label>
+                            <input type="number" className="form-control" id="additionalCharges" placeholder="Enter Additional Charges" 
+                            value={consumerInfo.additionalCharges} onChange={(e) => setConsumerInfo({ ...consumerInfo, additionalCharges: e.target.value })}/>
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="taxes">Taxes</label>
+                            <input type="number" className="form-control" id="taxes" placeholder="Enter Taxes"
+                            value={consumerInfo.taxes} onChange={(e) => setConsumerInfo({ ...consumerInfo, taxes: e.target.value })} />
+                        </div>
+
+                        {/* Total Amount Due Section */}
+                        <h4 className="mt-4 text-center" style={{ color: '#005C99' }}>Total Amount Due</h4>
+
+                        <div className="form-group">
+                            <label htmlFor="totalAmount">Total Amount Payable</label>
+                            <input type="number" className="form-control" id="totalAmount" placeholder="Enter Total Amount" 
+                            value={consumerInfo.totalAmountPayable} onChange={(e) => setConsumerInfo({ ...consumerInfo, totalAmountPayable: e.target.value })}/>
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="dueDate">Due Date</label>
+                            <input type="date" className="form-control" id="dueDate"
+                            value={consumerInfo.dueDate} onChange={(e) => setConsumerInfo({ ...consumerInfo, dueDate: e.target.value })} />
+                        </div>
+
+                        {/* Contact Information Section */}
+                        <h4 className="mt-4 text-center" style={{ color: '#005C99' }}>Contact Information</h4>
+
+                        <div className="form-group">
+                            <label htmlFor="contactNumbers">Contact Numbers</label>
+                            <input type="text" className="form-control" id="contactNumbers" placeholder="Enter Contact Numbers" 
+                            value={consumerInfo.contactNumbers} onChange={(e) => setConsumerInfo({ ...consumerInfo, contactNumbers: e.target.value })}/>
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="websiteEmail">Website/Email</label>
+                            <input type="email" className="form-control" id="websiteEmail" placeholder="Enter Website/Email" 
+                            value={consumerInfo.websiteOrEmail} onChange={(e) => setConsumerInfo({ ...consumerInfo, websiteOrEmail: e.target.value })}/>
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="additionalNotes">Additional Notes</label>
+                            <textarea className="form-control" id="additionalNotes" rows="3" placeholder="Enter Additional Notes"
+                            value={consumerInfo.additionalNotes} onChange={(e) => setConsumerInfo({ ...consumerInfo, additionalNotes: e.target.value })}></textarea>
+                        </div>
+                        <div className='d-flex align-items-center justify-content-center  mb-3'>
+                            <button type="submit" className="btn btn-primary rounded-5 login-second-col-btn w-50">Submit</button>
+                        </div>
+
+                    </form>
+
                 </div>
 
-       </Container>
+            </Container>
 
         </>
     )

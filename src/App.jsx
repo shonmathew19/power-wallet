@@ -18,6 +18,7 @@ import ComplaintForm from './pages/ComplaintForm'
 import SetUnitPrices from './components/SetUnitPrices'
 import ManageUsers from './components/ManageUsers'
 import ViewReports from './components/ViewReports'
+import AllConsumers from './pages/AllConsumers'
 
 
 
@@ -44,6 +45,7 @@ function App() {
         <Route path='/set-unit-prices' element={<SetUnitPrices />} />
         <Route path='/manage-users' element={<ManageUsers/>} />\
         <Route path='/view-reports' element={<ViewReports/>} />
+        <Route path='/all-consumers' element={<AllConsumers/>} />
 
       </Routes>
       <Footer />

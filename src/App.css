@@ -1,6 +1,6 @@
-body {
+/* body {
   overflow-x: hidden;
-}
+} */
 
 .bar {
   width: 100%;
@@ -189,6 +189,7 @@ footer a:hover {
  background-color: #a9abed;
  border-radius: 5px;
 }
+
 
 
 
