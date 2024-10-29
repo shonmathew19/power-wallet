@@ -19,6 +19,7 @@ import SetUnitPrices from './components/SetUnitPrices'
 import ManageUsers from './components/ManageUsers'
 import ViewReports from './components/ViewReports'
 import AllConsumers from './pages/AllConsumers'
+import NewConnectionRequests from './pages/NewConnectionRequests'
 
 
 
@@ -43,9 +44,10 @@ function App() {
         <Route path='/about' element={<About />} />
         <Route path='/complaint-form' element={<ComplaintForm />} />
         <Route path='/set-unit-prices' element={<SetUnitPrices />} />
-        <Route path='/manage-users' element={<ManageUsers/>} />\
+        <Route path='/manage-users' element={<ManageUsers/>} />
         <Route path='/view-reports' element={<ViewReports/>} />
         <Route path='/all-consumers' element={<AllConsumers/>} />
+        <Route path='/new-connection-requests' element={<NewConnectionRequests/>} />
 
       </Routes>
       <Footer />

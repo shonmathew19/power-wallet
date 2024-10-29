@@ -1,27 +1,28 @@
 import React, { useState } from 'react';
 import { Container } from 'react-bootstrap';
 import Header from '../components/Header';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import Footer from '../components/Footer';
+import { createNewConnectionApi } from '../../services/allApi';
+import { Link } from 'react-router-dom';
 
 function NewConnection() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        name: '',
+        applicantName: '',
         contactNumber: '',
-        email: '',
-        premise: '',
-        purpose: '',
+        emailId: '',
+        typeOfPremises: '',
+        connectionPurpose: '',
         permanentAddress: '',
         temporaryAddress: '',
         isCheckedAddress: false,
-        load: '',
+        expectedLoad: '',
         aadharNumber: '',
-        declaration: false
+        declaration: false,
+        addressOfPremise: ''
     });
-
-    const [formSubmitted, setFormSubmitted] = useState(false);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -31,11 +32,10 @@ function NewConnection() {
         });
 
         if (name === 'permanentAddress' && formData.isCheckedAddress) {
-            setFormData({
-                ...formData,
-                permanentAddress: value,
+            setFormData((prevFormData) => ({
+                ...prevFormData,
                 temporaryAddress: value,
-            });
+            }));
         }
     };
 
@@ -48,7 +48,7 @@ function NewConnection() {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!formData.declaration) {
@@ -57,19 +57,37 @@ function NewConnection() {
                 text: "Please accept the declaration to submit the form!",
                 icon: "warning"
             });
-        } else {
+            return; 
+        }
+
+        try {
+            const newConnection = await createNewConnectionApi(formData);
+            console.log(formData);
+            console.log(newConnection, '............');
+
+            if (newConnection.status === 201) {
+                Swal.fire({
+                    title: "Thank you!!!",
+                    text: "Your application is submitted!",
+                    icon: "success"
+                });
+                navigate('/home');
+            } else {
+                Swal.fire({
+                    title: "Error!",
+                    text: "There was a problem submitting your application. Please try again.",
+                    icon: "error"
+                });
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
             Swal.fire({
-                title: "Thank you!!!",
-                text: "Your application is submitted!",
-                icon: "success"
+                title: "Error!",
+                text: "There was a problem submitting your application. Please try again later.",
+                icon: "error"
             });
-            console.log("Form submitted with data: ", formData);
-            setFormSubmitted(true);
-            navigate('/home');
         }
     };
-
-    const { name, contactNumber, email, premise, purpose, permanentAddress, temporaryAddress, isCheckedAddress, load, aadharNumber, declaration } = formData;
 
     return (
         <>
@@ -79,51 +97,50 @@ function NewConnection() {
                     <div className='border shadow rounded-3 m-3'>
                         <h5 className='text-center mt-4' style={{ color: '#005C99' }}>Applicant Information</h5>
                         <div className='ms-3 me-3'>
-
                             <div className='form-group mt-2 mb-3'>
-                                <label className="form-check-label"> Name of the applicant</label>
+                                <label className="form-check-label">Name of the applicant</label>
                                 <input
                                     type="text"
-                                    name="name"
+                                    name="applicantName" 
                                     className='form-control w-100'
                                     placeholder='example: Shon Mathew'
-                                    value={name}
+                                    value={formData.applicantName} 
                                     onChange={handleChange}
                                     required
                                 />
                             </div>
                             <div className='form mt-2 mb-3'>
-                                <label className="form-check-label"> Contact Number</label>
+                                <label className="form-check-label">Contact Number</label>
                                 <input
                                     type="tel"
-                                    name="contactNumber"
+                                    name="contactNumber" 
                                     pattern="[0-9]{10}"
                                     className='form-control w-100'
                                     placeholder='example: +91 9876543210'
-                                    value={contactNumber}
+                                    value={formData.contactNumber} 
                                     onChange={handleChange}
                                     required
                                 />
                             </div>
                             <div className='form-group mt-2 mb-3'>
-                                <label className="form-check-label"> Email ID</label>
+                                <label className="form-check-label">Email ID</label>
                                 <input
                                     type="email"
-                                    name="email"
+                                    name="emailId" 
                                     className='form-control w-100'
                                     placeholder='example: shon@gmail.com'
-                                    value={email}
+                                    value={formData.emailId} 
                                     onChange={handleChange}
                                     required
                                 />
                             </div>
                             <div className='form-group mt-2 mb-3'>
-                                <label className="form-check-label"> Permanent Address</label>
+                                <label className="form-check-label">Permanent Address</label>
                                 <textarea
                                     name="permanentAddress"
                                     className='form-control w-100'
                                     placeholder='Enter Address'
-                                    value={permanentAddress}
+                                    value={formData.permanentAddress} 
                                     onChange={handleChange}
                                     required
                                 ></textarea>
@@ -133,20 +150,20 @@ function NewConnection() {
                                     type="checkbox"
                                     className="form-check-input"
                                     id="sameAddress"
-                                    checked={isCheckedAddress}
+                                    checked={formData.isCheckedAddress}
                                     onChange={handleAddressCheckbox}
                                 />
                                 <label className="form-check-label" htmlFor="sameAddress">Check this if temporary address is the same as permanent address.</label>
                             </div>
                             <div className='form-group mt-2 mb-3'>
-                                <label className="form-check-label"> Temporary Address</label>
+                                <label className="form-check-label">Temporary Address</label>
                                 <textarea
-                                    name="temporaryAddress"
+                                    name="temporaryAddress" 
                                     className='form-control w-100'
                                     placeholder='Enter Address'
-                                    value={temporaryAddress}
+                                    value={formData.temporaryAddress}
                                     onChange={handleChange}
-                                    required={!isCheckedAddress} // Only required if checkbox is not checked
+                                    required={!formData.isCheckedAddress} 
                                 ></textarea>
                             </div>
 
@@ -154,10 +171,10 @@ function NewConnection() {
                                 <label className="form-check-label">Aadhar Number</label>
                                 <input
                                     type="text"
-                                    name="aadharNumber"
+                                    name="aadharNumber" 
                                     className='form-control w-100'
                                     placeholder='Enter Aadhar Number'
-                                    value={aadharNumber}
+                                    value={formData.aadharNumber} 
                                     onChange={handleChange}
                                     required
                                 />
@@ -168,9 +185,9 @@ function NewConnection() {
                             <div>
                                 <label className="form-check-label">Type of Premises:</label>
                                 <select
-                                    name="premise"
+                                    name="typeOfPremises" 
                                     className='form-select  mt-2 mb-3'
-                                    value={premise}
+                                    value={formData.typeOfPremises} 
                                     onChange={handleChange}
                                     required
                                 >
@@ -181,9 +198,9 @@ function NewConnection() {
                                     <option value="others">Others</option>
                                 </select>
                             </div>
-                            {premise === 'others' && (
+                            {formData.typeOfPremises === 'others' && (
                                 <div className='form-group mt-2 mb-3'>
-                                    <label className="form-check-label text-danger"> Mention the type of premise : *</label>
+                                    <label className="form-check-label text-danger">Mention the type of premise: *</label>
                                     <input
                                         type="text"
                                         className='form-control w-100'
@@ -195,9 +212,9 @@ function NewConnection() {
                             <div>
                                 <label className="form-check-label">Connection purpose:</label>
                                 <select
-                                    name="purpose"
+                                    name="connectionPurpose" 
                                     className="form-select mt-2 mb-3"
-                                    value={purpose}
+                                    value={formData.connectionPurpose} 
                                     onChange={handleChange}
                                     required
                                 >
@@ -212,9 +229,9 @@ function NewConnection() {
                                     <option value="others">Other</option>
                                 </select>
                             </div>
-                            {purpose === 'others' && (
+                            {formData.connectionPurpose === 'others' && (
                                 <div className='form-group mt-2 mb-3'>
-                                    <label className="form-check-label text-danger"> Mention the type of connection : *</label>
+                                    <label className="form-check-label text-danger">Mention the type of connection: *</label>
                                     <input
                                         type="text"
                                         className='form-control w-100'
@@ -224,22 +241,24 @@ function NewConnection() {
                                 </div>
                             )}
                             <div className='form-group mt-2 mb-3'>
-                                <label className="form-check-label"> Address of premise for connection</label>
+                                <label className="form-check-label">Address of premise for connection</label>
                                 <textarea
-                                    name="premiseAddress"
+                                    name="addressOfPremise"
                                     className='form-control w-100'
                                     placeholder='Enter Address'
+                                    value={formData.addressOfPremise} 
+                                    onChange={handleChange}
                                     required
                                 ></textarea>
                             </div>
                             <div className='form mt-2 mb-3'>
-                                <label className="form-check-label"> Expected Load (in kW)</label>
+                                <label className="form-check-label">Expected Load (in kW)</label>
                                 <input
                                     type="number"
-                                    name="load"
+                                    name="expectedLoad"
                                     className='form-control w-100'
                                     placeholder='example: 2kW'
-                                    value={load}
+                                    value={formData.expectedLoad} 
                                     onChange={handleChange}
                                     required
                                 />
@@ -250,8 +269,8 @@ function NewConnection() {
                                     type="checkbox"
                                     className="form-check-input"
                                     id="declaration"
-                                    name="declaration"
-                                    checked={declaration}
+                                    name="declaration" 
+                                    checked={formData.declaration}
                                     onChange={handleChange}
                                     required
                                 />

@@ -5,6 +5,7 @@ import { LineChart } from '@mui/x-charts/LineChart';
 import { PieChart } from '@mui/x-charts/PieChart';
 
 const Dashboard = () => {
+  const totalUnitsConsumed = sessionStorage.getItem('totalunitsconsumed')
   return (
     <div className="container-fluid">
       <div className="row mt-3">
@@ -15,6 +16,11 @@ const Dashboard = () => {
               <li className="nav-item">
                 <Link className="nav-link active" to={'/all-consumers'}>
                   <span className='text-success fw-bolder'>All CONSUMERS</span>
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link active" to={'/new-connection-requests'}>
+                  New connection requests
                 </Link>
               </li>
 
@@ -54,29 +60,29 @@ const Dashboard = () => {
                 xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
                 series={[
                   {
-                    data: [2, 5.5, 2, 8.5, 1.5, 5],
+                    data: [100,200,300,totalUnitsConsumed],
                   },
                 ]}
                 width={500}
                 height={300}
               />
             </div>
-          <div className='d-flex flex-column m-3'>
-            <h3 className='text-center'>Total number of consumers</h3>
-          <PieChart
-              series={[
-                {
-                  data: [
-                    { id: 0, value: 10, label: 'series A' },
-                    { id: 1, value: 15, label: 'series B' },
-                    { id: 2, value: 20, label: 'series C' },
-                  ],
-                },
-              ]}
-              width={400}
-              height={200}
-            />
-          </div>
+            <div className='d-flex flex-column m-3'>
+              <h3 className='text-center'>Total number of consumers</h3>
+              <PieChart
+                series={[
+                  {
+                    data: [
+                      { id: 0, value: sessionStorage.getItem('totalnumberofconsumers'), label: 'All consumers' },
+                      { id: 1, value: 5, label: 'Deactivated' },
+                      // { id: 2, value: 20, label: 'series C' },
+                    ],
+                  },
+                ]}
+                width={400}
+                height={200}
+              />
+            </div>
           </div>
 
           <div className="container">

@@ -8,7 +8,17 @@ const AllConsumers = () => {
         try {
             const consumersData = await allConsumersApi();
             console.log(consumersData.data);
-            setConsumers(consumersData.data);
+            const allConsumers = consumersData.data.allConsumers; 
+            
+            setConsumers(allConsumers); 
+
+            const totalUnitsConsumed = allConsumers.reduce((total, consumer) => {
+                return total + (consumer.unitsConsumed || 0); 
+            }, 0);
+    
+            console.log('Total Units Consumed:', totalUnitsConsumed);
+            sessionStorage.setItem('totalunitsconsumed', totalUnitsConsumed);
+            sessionStorage.setItem('totalnumberofconsumers', allConsumers.length);
         } catch (error) {
             console.error('Error fetching consumers:', error);
         }

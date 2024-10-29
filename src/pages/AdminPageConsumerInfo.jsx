@@ -2,9 +2,12 @@ import React from 'react'
 import { Container } from 'react-bootstrap'
 import { useState } from 'react';
 import { consumerInfoApi } from '../../services/allApi';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 
 function AdminPageConsumerInfo() {
+    const navigate = useNavigate();
 
     const [consumerInfo, setConsumerInfo] = useState({
         consumerNumber: "",
@@ -30,11 +33,26 @@ function AdminPageConsumerInfo() {
     })
 
     const handleSubmit = async (e) => {
+        
         e.preventDefault();
         console.log(consumerInfo);
         const result = await consumerInfoApi(consumerInfo)
+        console.log('handle submit',result)
 
-        console.log('handle submit', result)
+        if(result.status ===200){
+            Swal.fire({
+                title: "",
+                text: 'Data submitted successfully',
+                icon: "success"
+            });
+            navigate('/')
+        }else{
+            Swal.fire({
+                title: "OOPS",
+                text: 'something happened',
+                icon: "warning"
+            });
+        }
 
 
     };
@@ -193,7 +211,7 @@ function AdminPageConsumerInfo() {
                             value={consumerInfo.additionalNotes} onChange={(e) => setConsumerInfo({ ...consumerInfo, additionalNotes: e.target.value })}></textarea>
                         </div>
                         <div className='d-flex align-items-center justify-content-center  mb-3'>
-                            <button type="submit" className="btn btn-primary rounded-5 login-second-col-btn w-50">Submit</button>
+                            <button type="submit" className="btn btn-primary rounded-5 login-second-col-btn w-50 mt-3">Submit</button>
                         </div>
 
                     </form>
