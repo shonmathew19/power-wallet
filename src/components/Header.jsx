@@ -30,7 +30,7 @@ function Header() {
 
   return (
     <Navbar style={{ backgroundColor: '#001F3F' }} expand="lg" data-bs-theme="dark">
-      <Container>
+      <Container >
         <Navbar.Brand as={Link} to={'/'}>
           <img
             alt=""

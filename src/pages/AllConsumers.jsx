@@ -1,22 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { allConsumersApi } from '../../services/allApi';
 
 const AllConsumers = () => {
     const [consumers, setConsumers] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const consumersPerPage = 10;
+    const tableRef = useRef(null);
 
     const fetchAllConsumers = async () => {
         try {
             const consumersData = await allConsumersApi();
-            console.log(consumersData.data);
-            const allConsumers = consumersData.data.allConsumers; 
-            
-            setConsumers(allConsumers); 
+            const allConsumers = consumersData.data.allConsumers;
+
+            setConsumers(allConsumers);
 
             const totalUnitsConsumed = allConsumers.reduce((total, consumer) => {
-                return total + (consumer.unitsConsumed || 0); 
+                return total + (consumer.unitsConsumed || 0);
             }, 0);
-    
-            console.log('Total Units Consumed:', totalUnitsConsumed);
+
             sessionStorage.setItem('totalunitsconsumed', totalUnitsConsumed);
             sessionStorage.setItem('totalnumberofconsumers', allConsumers.length);
         } catch (error) {
@@ -28,13 +29,54 @@ const AllConsumers = () => {
         fetchAllConsumers();
     }, []);
 
+    const totalPages = Math.ceil(consumers.length / consumersPerPage);
+
+    const handleNext = () => {
+        if (currentPage < totalPages - 1) {
+            setCurrentPage((prevPage) => prevPage + 1);
+        }
+    };
+
+    const handlePrevious = () => {
+        if (currentPage > 0) {
+            setCurrentPage((prevPage) => prevPage - 1);
+        }
+    };
+
+    const startIndex = currentPage * consumersPerPage;
+    const endIndex = startIndex + consumersPerPage;
+    const currentConsumers = consumers.slice(startIndex, endIndex);
+
+    const scrollLeft = () => {
+        if (tableRef.current) {
+            tableRef.current.scrollBy({ left: -200, behavior: 'smooth' });
+        }
+    };
+
+    const scrollRight = () => {
+        if (tableRef.current) {
+            tableRef.current.scrollBy({ left: 200, behavior: 'smooth' });
+        }
+    };
+
     return (
-        <div className="container mt-4">
+        <div className="container mt-4" style={{ position: 'relative' }}>
             <h2 className="text-center mb-4">Consumers List</h2>
-            <div className="table-responsive" style={{ overflowX: 'auto' }}>
+            <div className="fixed-left-button" style={{ position: 'fixed', left: '10px', top: '200px', zIndex: 1000 }}>
+                <button className="btn btn-secondary" onClick={scrollLeft} style={{ backgroundColor: 'orange' }}>
+                    <i className="fa-solid fa-angles-left"></i>
+                </button>
+            </div>
+            <div className="fixed-right-button" style={{ position: 'fixed', right: '10px', top: '200px', zIndex: 1000 }}>
+                <button className="btn btn-secondary" onClick={scrollRight} style={{ backgroundColor: 'orange' }}>
+                    <i className="fa-solid fa-angles-right"></i>
+                </button>
+            </div>
+            <div className="table-responsive" style={{ overflowX: 'auto' }} ref={tableRef}>
                 <table className="table table-bordered">
                     <thead className="thead-light">
                         <tr>
+                            <th>ID</th>
                             <th>Consumer Number</th>
                             <th>Consumer Name</th>
                             <th>Consumer Address</th>
@@ -55,12 +97,14 @@ const AllConsumers = () => {
                             <th>Contact Numbers</th>
                             <th>Website or Email</th>
                             <th>Additional Notes</th>
+                            <th>ACTIONS</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {consumers.length > 0 ? (
-                            consumers.map((consumer, index) => (
+                        {currentConsumers.length > 0 ? (
+                            currentConsumers.map((consumer, index) => (
                                 <tr key={index}>
+                                    <td>{index + startIndex + 1}</td>
                                     <td>{consumer.consumerNumber}</td>
                                     <td>{consumer.consumerName}</td>
                                     <td>{consumer.consumerAddress}</td>
@@ -81,15 +125,39 @@ const AllConsumers = () => {
                                     <td>{consumer.contactNumbers}</td>
                                     <td>{consumer.websiteOrEmail}</td>
                                     <td>{consumer.additionalNotes}</td>
+                                    <td>
+                                        <div className="d-flex justify-content-between">
+                                            <button className='btn btn-outline-primary w-100 me-1' title="Edit">
+                                                <i className="fa-solid fa-pen-to-square"></i>
+                                            </button>
+                                            <button className='btn btn-danger w-100 ms-1' title="Delete">
+                                                <i className="fa-solid fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
                                 </tr>
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="20" className="text-center">No consumers found</td>
+                                <td colSpan="21" className="text-center">No consumers found</td>
                             </tr>
                         )}
                     </tbody>
                 </table>
+            </div>
+            <div className="d-flex justify-content-between mt-3">
+                <button
+                    className="btn btn-secondary m-3 w-25"
+                    onClick={handlePrevious}
+                    disabled={currentPage === 0}>
+                    Previous
+                </button>
+                <button
+                    className="btn btn-secondary m-3 w-25"
+                    onClick={handleNext}
+                    disabled={currentPage === totalPages - 1}>
+                    Next
+                </button>
             </div>
         </div>
     );

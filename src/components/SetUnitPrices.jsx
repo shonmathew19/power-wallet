@@ -1,25 +1,36 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 function SetUnitPrices() {
-    const [unitPrice, setUnitPrice] = useState('');
-    const [adminFee, setAdminFee] = useState('');
-    const [serviceCharge, setServiceCharge] = useState('');
+    const [formData, setFormData] = useState({
+        unitPrice: '',
+        additionalCharges: '',
+        taxes: ''
+    });
     const [updateSuccess, setUpdateSuccess] = useState(false);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Unit Price:', unitPrice);
-        console.log('Admin Fee:', adminFee);
-        console.log('Service Charge:', serviceCharge);
+        console.log('Unit Price:', formData.unitPrice);
+        console.log('Additional Charges:', formData.additionalCharges);
+        console.log('Taxes:', formData.taxes);
         setUpdateSuccess(true);
-        setUnitPrice('');
-        setAdminFee('');
-        setServiceCharge('');
+        setFormData({
+            unitPrice: '',
+            additionalCharges: '',
+            taxes: ''
+        });
     };
 
     return (
-        <div className="container mt-5 mb-3 ">
+        <div className="container mt-5 mb-3">
             <div className="card shadow-lg">
                 <div className="card-body">
                     <h2 className="card-title text-center mb-4" style={{ color: '#004B73' }}>Update Unit Price & Fees</h2>
@@ -33,36 +44,39 @@ function SetUnitPrices() {
                             <label>Unit Price (per kWh)</label>
                             <input
                                 type="number"
+                                name="unitPrice"
                                 className="form-control"
-                                value={unitPrice}
-                                onChange={(e) => setUnitPrice(e.target.value)}
+                                value={formData.unitPrice}
+                                onChange={handleChange}
                                 required
                             />
                         </div>
                         <div className="form-group mb-3">
-                            <label>Admin Fee</label>
+                            <label>Additional Charges</label>
                             <input
                                 type="number"
+                                name="additionalCharges"
                                 className="form-control"
-                                value={adminFee}
-                                onChange={(e) => setAdminFee(e.target.value)}
+                                value={formData.additionalCharges}
+                                onChange={handleChange}
                                 required
                             />
                         </div>
                         <div className="form-group mb-4">
-                            <label>Service Charge</label>
+                            <label>Taxes</label>
                             <input
                                 type="number"
+                                name="taxes"
                                 className="form-control"
-                                value={serviceCharge}
-                                onChange={(e) => setServiceCharge(e.target.value)}
+                                value={formData.taxes}
+                                onChange={handleChange}
                                 required
                             />
                         </div>
                         <div className='d-flex justify-content-center'>
-                        <button type="submit" className="btn text-light login-second-col-btn w-50">
-                            Update
-                        </button>
+                            <button type="submit" className="btn text-light login-second-col-btn w-50">
+                                Update
+                            </button>
                         </div>
                     </form>
                 </div>
