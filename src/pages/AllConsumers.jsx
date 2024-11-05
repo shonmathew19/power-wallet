@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { allConsumersApi } from '../../services/allApi';
+import { allConsumersApi, deleteConsumerById } from '../../services/allApi';
+import Swal from 'sweetalert2';
 
 const AllConsumers = () => {
     const [consumers, setConsumers] = useState([]);
@@ -58,6 +59,29 @@ const AllConsumers = () => {
             tableRef.current.scrollBy({ left: 200, behavior: 'smooth' });
         }
     };
+
+    const deleteConsumer = async (data) => {
+        try {
+            const response = await deleteConsumerById(data.userId);
+    
+            if (response.status === 200) {
+                Swal.fire({
+                    title: "",
+                    text: `${data.consumerName} deleted successfully`,
+                    icon: "success"
+                });
+                // Refresh the consumer list after a successful deletion
+                fetchAllConsumers();
+            }
+        } catch (error) {
+            console.error("Error deleting consumer:", error);
+            Swal.fire({
+                title: "Error",
+                text: "Failed to delete the consumer",
+                icon: "error"
+            });
+        }
+    }
 
     return (
         <div className="container mt-4" style={{ position: 'relative' }}>
@@ -130,7 +154,8 @@ const AllConsumers = () => {
                                             <button className='btn btn-outline-primary w-100 me-1' title="Edit">
                                                 <i className="fa-solid fa-pen-to-square"></i>
                                             </button>
-                                            <button className='btn btn-danger w-100 ms-1' title="Delete">
+                                            <button className='btn btn-danger w-100 ms-1' title="Delete"
+                                                onClick={() => deleteConsumer(consumer)}>
                                                 <i className="fa-solid fa-trash"></i>
                                             </button>
                                         </div>

@@ -8,7 +8,7 @@ import { roleContext } from '../context/RoleContext';
 import { loginApi, registerApi } from '../../services/allApi';
 
 function Login({ register }) {
-    // Define state variables for username, password, and email
+   
 
     const [userData, setUserData] = useState({
         username: '',
@@ -18,6 +18,8 @@ function Login({ register }) {
 
     const navigate = useNavigate();
     const { role, setRole } = useContext(roleContext);
+
+    
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -68,6 +70,8 @@ function Login({ register }) {
             return;
         } else {
             const result = await loginApi(userData);
+            console.log(result.data.data._id,'*****************************************')
+            sessionStorage.setItem('id',result.data.data._id)
             if (result.status === 201) {
                 setUserData({
                     username: '',

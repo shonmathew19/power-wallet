@@ -37,7 +37,7 @@ function App() {
         <Route path='/new-connection' element={<NewConnection />} />
         <Route path='/terms-and-conditions' element={<TermsAndConditions />} />
         <Route path='/privacy-policy' element={<PrivacyPolicy />} />
-        <Route path='/consumer-info' element={<ConsumerInfoForm />} />
+        <Route path='/consumer-info' element={<ConsumerInfoForm  />} />
         <Route path='/billing' element={<Billing />} />
         <Route path='/admin-page-consumer-info' element={<AdminPageConsumerInfo />} />
         <Route path='/dashboard' element={<Dashboard />} />

@@ -1,13 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import { Link } from 'react-router-dom';
-import Footer from '../components/Footer'
+import Footer from '../components/Footer';
+import { getConsumerInfoById } from '../../services/allApi';
 
 function ConsumerInfoForm() {
+    const [consumerData, setConsumerData] = useState(null);
+
+    const fetchConsumerInfo = async () => {
+        const id = sessionStorage.getItem('id');
+        const result = await getConsumerInfoById(id);
+        setConsumerData(result.data.consumer); 
+    }
+
+    useEffect(() => {
+        fetchConsumerInfo();
+    }, []);
+
+    if (!consumerData) return <div>Loading...</div>;
+
     return (
         <>
-           
-
             <div className="container-fluid mt-5">
                 <h2 className="mb-4 text-center text-primary">Consumer Information Summary</h2>
 
@@ -22,78 +35,77 @@ function ConsumerInfoForm() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {/* Consumer information rows */}
                                 <tr>
                                     <td>Consumer Number</td>
-                                    <td>123456789</td>
+                                    <td>{consumerData.consumerNumber}</td>
                                 </tr>
                                 <tr>
                                     <td>Name of the Consumer</td>
-                                    <td>Shon Mathew</td>
+                                    <td>{consumerData.consumerName}</td>
                                 </tr>
                                 <tr>
                                     <td>Address</td>
-                                    <td>Ernakulam, KL</td>
+                                    <td>{consumerData.consumerAddress}</td>
                                 </tr>
                                 <tr>
                                     <td>Bill Period</td>
-                                    <td>From: 2024-01-01 To: 2024-01-31</td>
+                                    <td>From: {new Date(consumerData.dateOfBillGeneration).toLocaleDateString()} To: {new Date(consumerData.dueDate).toLocaleDateString()}</td>
                                 </tr>
                                 <tr>
                                     <td>Bill Number</td>
-                                    <td>BIL123456</td>
+                                    <td>{consumerData.billNumber}</td>
                                 </tr>
                                 <tr>
                                     <td>Date of Bill Generation</td>
-                                    <td>2024-01-15</td>
+                                    <td>{new Date(consumerData.dateOfBillGeneration).toLocaleDateString()}</td>
                                 </tr>
                                 <tr>
                                     <td>Meter Number</td>
-                                    <td>MTR987654</td>
+                                    <td>{consumerData.meterNumber}</td>
                                 </tr>
                                 <tr>
                                     <td>Previous Meter Reading</td>
-                                    <td>2500</td>
+                                    <td>{consumerData.previousMeterReading}</td>
                                 </tr>
                                 <tr>
                                     <td>Current Meter Reading</td>
-                                    <td>2600</td>
+                                    <td>{consumerData.currentMeterReading}</td>
                                 </tr>
                                 <tr>
                                     <td>Type of Meter</td>
-                                    <td>Digital</td>
+                                    <td>{consumerData.meterType}</td>
                                 </tr>
                                 <tr>
                                     <td>Units Consumed (in kWh)</td>
-                                    <td>100</td>
+                                    <td>{consumerData.unitsConsumed}</td>
                                 </tr>
                                 <tr>
                                     <td>Tariff Rate (cost per unit)</td>
-                                    <td>₹0.12</td>
+                                    <td>₹{consumerData.tariffRate}</td>
                                 </tr>
                                 <tr>
                                     <td>Fixed Charges</td>
-                                    <td>₹10.00</td>
+                                    <td>₹{consumerData.fixedCharges}</td>
                                 </tr>
                                 <tr>
                                     <td>Variable Charges</td>
-                                    <td>₹12.00</td>
+                                    <td>₹{consumerData.variableCharges}</td>
                                 </tr>
                                 <tr>
                                     <td>Additional Charges</td>
-                                    <td>₹5.00</td>
+                                    <td>₹{consumerData.additionalCharges}</td>
                                 </tr>
                                 <tr>
                                     <td>Taxes</td>
-                                    <td>₹1.50</td>
+                                    <td>₹{consumerData.taxes}</td>
                                 </tr>
                                 <tr>
                                     <td>Total Amount Payable</td>
-                                    <td>₹28.50</td>
+                                    <td>₹{consumerData.totalAmountPayable}</td>
                                 </tr>
                                 <tr>
                                     <td>Due Date for Payment</td>
-                                    <td>2024-02-01</td>
+                                    <td>{new Date(consumerData.dueDate).toLocaleDateString()}</td>
                                 </tr>
                                 <tr>
                                     <td>Payment Methods Available</td>
@@ -105,15 +117,15 @@ function ConsumerInfoForm() {
                                 </tr>
                                 <tr>
                                     <td>Customer Service Contact</td>
-                                    <td>1234567809</td>
+                                    <td>{consumerData.contactNumbers.join(', ')}</td>
                                 </tr>
                                 <tr>
                                     <td>Support Website & Email</td>
-                                    <td>www.example.com / support@example.com</td>
+                                    <td>{consumerData.websiteOrEmail}</td>
                                 </tr>
                                 <tr>
                                     <td>Additional Notes</td>
-                                    <td>Please make sure to pay by the due date to avoid late fees.</td>
+                                    <td>{consumerData.additionalNotes}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -121,10 +133,9 @@ function ConsumerInfoForm() {
                 </div>
 
                 <div className='d-flex justify-content-center mb-3'>
-                <Link to={'/billing'} className='btn text-light login-second-col-btn rounded-5 w-50'> Continue to payment page</Link>
+                    <Link to={'/billing'} className='btn text-light login-second-col-btn rounded-5 w-50'> Continue to payment page</Link>
                 </div>
             </div>
-           
         </>
     );
 }

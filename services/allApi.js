@@ -32,3 +32,16 @@ export const viewAllNewConnectionsApi = async()=>{
     return await commonAPI('GET', `${BASE_URL}/view-new-connection`, '', '');
 }
 
+
+//delete consumer by id
+export const deleteConsumerById = async (userId) => {
+    return await commonAPI('DELETE', `${BASE_URL}/delete-consumer`, { userId }, '');
+};
+
+
+//get consumerInfo by id
+export const getConsumerInfoById = async (id) => {
+    return await commonAPI('GET', `${BASE_URL}/consumerinfo-byid`, { id }, '');
+};
+
+
