@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { allConsumersApi, deleteConsumerById } from '../../services/allApi';
 import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
 
 const AllConsumers = () => {
     const [consumers, setConsumers] = useState([]);
@@ -63,14 +64,14 @@ const AllConsumers = () => {
     const deleteConsumer = async (data) => {
         try {
             const response = await deleteConsumerById(data.userId);
-    
+
             if (response.status === 200) {
                 Swal.fire({
                     title: "",
                     text: `${data.consumerName} deleted successfully`,
                     icon: "success"
                 });
-                // Refresh the consumer list after a successful deletion
+             
                 fetchAllConsumers();
             }
         } catch (error) {
@@ -121,6 +122,7 @@ const AllConsumers = () => {
                             <th>Contact Numbers</th>
                             <th>Website or Email</th>
                             <th>Additional Notes</th>
+                            <th>Payment Status</th>
                             <th>ACTIONS</th>
                         </tr>
                     </thead>
@@ -149,11 +151,16 @@ const AllConsumers = () => {
                                     <td>{consumer.contactNumbers}</td>
                                     <td>{consumer.websiteOrEmail}</td>
                                     <td>{consumer.additionalNotes}</td>
+                                    <td>{consumer.paymentStatus}</td>
                                     <td>
+
                                         <div className="d-flex justify-content-between">
-                                            <button className='btn btn-outline-primary w-100 me-1' title="Edit">
-                                                <i className="fa-solid fa-pen-to-square"></i>
-                                            </button>
+                                            <Link to={'/admin-page-consumer-info'} state={{ consumer }}>
+                                                <button className='btn btn-outline-primary w-100 me-1' title="Edit">
+                                                    <i className="fa-solid fa-pen-to-square"></i>
+                                                </button>
+                                            </Link>
+
                                             <button className='btn btn-danger w-100 ms-1' title="Delete"
                                                 onClick={() => deleteConsumer(consumer)}>
                                                 <i className="fa-solid fa-trash"></i>

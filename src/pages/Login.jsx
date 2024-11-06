@@ -8,7 +8,7 @@ import { roleContext } from '../context/RoleContext';
 import { loginApi, registerApi } from '../../services/allApi';
 
 function Login({ register }) {
-   
+
 
     const [userData, setUserData] = useState({
         username: '',
@@ -19,91 +19,111 @@ function Login({ register }) {
     const navigate = useNavigate();
     const { role, setRole } = useContext(roleContext);
 
-    
 
     const handleRegister = async (e) => {
         e.preventDefault();
         const { username, email, password } = userData;
+    
         if (!username || !email || !password) {
             Swal.fire({
                 title: "Incomplete Form",
                 text: "Please fill all fields.",
                 icon: "warning"
             });
-        } else {
-            const result = await registerApi(userData)
-
+            return;
+        }
+    
+        try {
+            const result = await registerApi(userData);
+    
             if (result.status === 201) {
                 setUserData({
                     username: '',
                     email: '',
                     password: ''
-                })
+                });
                 Swal.fire({
-                    title: "",
+                    title: "Registration Successful",
                     text: `"${result.data.data.username}" registered successfully`,
                     icon: "success"
                 });
-                navigate('/login')
-            }else if(result.status = 401){
+                navigate('/login');
+            } else if (result.status === 401) {
                 Swal.fire({
-                    title: "SORRY",
-                    text: `Something went wrong`,
+                    title: "Error",
+                    text: "Something went wrong. Please try again.",
+                    icon: "error"
+                });
+            } else {
+                Swal.fire({
+                    title: "Unexpected Error",
+                    text: "An unexpected error occurred. Please try again later.",
                     icon: "error"
                 });
             }
-
-
+        } catch (error) {
+            Swal.fire({
+                title: "Error",
+                text: `An error occurred: ${error.message}`,
+                icon: "error"
+            });
         }
-    }
-
+    };
+    
 
     const handleLogin = async (e) => {
         e.preventDefault();
         const { username, email, password } = userData;
+    
         if (!email || !password) {
             Swal.fire({
                 title: "Incomplete Form",
-                text: "Please fill out both username and password fields.",
+                text: "Please fill out both email and password fields.",
                 icon: "warning"
             });
             return;
-        } else {
+        }
+    
+        try {
             const result = await loginApi(userData);
-            console.log(result.data.data._id,'*****************************************')
-            sessionStorage.setItem('id',result.data.data._id)
+    
             if (result.status === 201) {
+                const { _id, username, accountType } = result.data.data;
+    
+                sessionStorage.setItem('id', _id);
+                sessionStorage.setItem('role', accountType || null);
+    
                 setUserData({
                     username: '',
                     email: '',
                     password: ''
-                })
-                const role = result.data.data.accountType;
-                if (role === 'user') {
-                    sessionStorage.setItem('role', role)
-                } else if (role === 'admin') {
-                    sessionStorage.setItem('role', role)
-                } else {
-                    sessionStorage.setItem('role', null)
-                }
+                });
+    
                 Swal.fire({
                     title: "",
-                    text: `"${result.data.data.username}" logged in successfully`,
+                    text: `${username} logged in successfully`,
                     icon: "success"
                 });
-
-                navigate('/home')
+    
+                navigate('/home');
             } else {
                 Swal.fire({
-                    title: "error",
+                    title: "Error",
                     text: "Username or password is incorrect",
                     icon: "error"
                 });
             }
-
+        } catch (error) {
+            Swal.fire({
+                title: "Error",
+                text: "An unexpected error occurred. Please try again later.",
+                icon: "error"
+            });
         }
-
     };
+    
+
+
 
     return (
         <div>

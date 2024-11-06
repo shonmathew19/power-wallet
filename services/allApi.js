@@ -41,7 +41,11 @@ export const deleteConsumerById = async (userId) => {
 
 //get consumerInfo by id
 export const getConsumerInfoById = async (id) => {
-    return await commonAPI('GET', `${BASE_URL}/consumerinfo-byid`, { id }, '');
+    console.log(id, '*-*-*-*-*-*/*');
+    return await commonAPI('GET', `${BASE_URL}/consumerinfo-byid/${id}`);
 };
 
-
+// Edit consumer information by userId
+export const editConsumerInfoApi = async (userId, consumerDetails) => {
+    return await commonAPI('PUT', `${BASE_URL}/update-consumer/${userId}`, consumerDetails, '');
+};

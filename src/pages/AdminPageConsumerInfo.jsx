@@ -1,228 +1,157 @@
-import React from 'react'
-import { Container } from 'react-bootstrap'
-import { useState } from 'react';
-import { consumerInfoApi } from '../../services/allApi';
+import React, { useState, useEffect } from 'react';
+import { Container } from 'react-bootstrap';
+import { consumerInfoApi, editConsumerInfoApi } from '../../services/allApi';
 import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function AdminPageConsumerInfo() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const consumerData = location.state?.consumer || {};
 
     const [consumerInfo, setConsumerInfo] = useState({
         consumerNumber: "",
-        consumerName:"",
-        consumerAddress:"",
-        billNumber:"",
-        dateOfBillGeneration:"",
-        meterNumber:"",
-        previousMeterReading:"",
-        currentMeterReading:"",
-        meterType:"",
-        unitsConsumed:"",
-        tariffRate:"",
-        fixedCharges:"",
-        variableCharges:"",
-        additionalCharges:"",
-        taxes:"",
-        totalAmountPayable:"",
-        dueDate:"",
-        contactNumbers:"",
-        websiteOrEmail:"",
-        additionalNotes:""
-    })
+        consumerName: "",
+        consumerAddress: "",
+        billNumber: "",
+        dateOfBillGeneration: "",
+        meterNumber: "",
+        previousMeterReading: "",
+        currentMeterReading: "",
+        meterType: "",
+        unitsConsumed: "",
+        tariffRate: "",
+        fixedCharges: "",
+        variableCharges: "",
+        additionalCharges: "",
+        taxes: "",
+        totalAmountPayable: "",
+        dueDate: "",
+        contactNumbers: "",
+        websiteOrEmail: "",
+        additionalNotes: "",
+        paymentStatus:""
+    });
 
-    const handleSubmit = async (e) => {
-        
-        e.preventDefault();
-        console.log(consumerInfo);
-        const result = await consumerInfoApi(consumerInfo)
-        console.log('handle submit',result)
-
-        if(result.status ===200){
-            Swal.fire({
-                title: "",
-                text: 'Data submitted successfully',
-                icon: "success"
-            });
-            navigate('/')
-        }else{
-            Swal.fire({
-                title: "OOPS",
-                text: 'something happened',
-                icon: "warning"
-            });
+    useEffect(() => {
+        if (consumerData) {
+            setConsumerInfo(consumerData);
         }
+    }, [consumerData]);
 
-
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setConsumerInfo((prevState) => ({
+            ...prevState,
+            [name]: value
+        }));
     };
 
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     const result = await consumerInfoApi(consumerInfo);
 
+    //     if (result.status === 200) {
+    //         Swal.fire({
+    //             text: 'Data submitted successfully',
+    //             icon: "success"
+    //         });
+    //         navigate('/');
+    //     } else {
+    //         Swal.fire({
+    //             title: "OOPS",
+    //             text: 'Something happened',
+    //             icon: "warning"
+    //         });
+    //     }
+    // };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+    
+        try {
+            
+            const result = await editConsumerInfoApi(consumerInfo.userId, consumerInfo);
+    
+            if (result.status === 200) {
+                Swal.fire({
+                    text: 'Consumer information updated successfully',
+                    icon: "success"
+                });
+                navigate('/all-consumers');
+            } else {
+                Swal.fire({
+                    title: "OOPS",
+                    text: 'Something went wrong',
+                    icon: "warning"
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                title: "Error",
+                text: 'Could not update consumer information',
+                icon: "error"
+            });
+        }
+    };
+    
 
     return (
+        <Container>
+            <h2 className="mb-2 mt-3 text-center" style={{ color: '#004B73' }}>
+                Admin Consumer Information Form
+            </h2>
+            <div className="border shadow rounded-3 m-3">
+                <form className="w-75 mx-auto" onSubmit={handleSubmit}>
+                    <h4 className="text-center mt-2" style={{ color: '#005C99' }}>
+                        Consumer Information
+                    </h4>
 
-        <>
-            <Container>
-                <h2 class="mb-2 mt-3 text-center" style={{ color: '#004B73' }}>Admin Consumer Information Form</h2>
-                <div class="border shadow rounded-3 m-3 ">
-
-
-                    <form className="w-75 mx-auto" onSubmit={handleSubmit}>
-                        <h4 className="text-center mt-2" style={{ color: '#005C99' }}>Consumer Information</h4>
-
-                        <div className="form-group">
-                            <label htmlFor="consumerNumber">Consumer Number</label>
-                            <input type="text" className="form-control" id="consumerNumber" placeholder="Enter Consumer Number"
-                                value={consumerInfo.consumerNumber} onChange={(e) => setConsumerInfo({ ...consumerInfo, consumerNumber: e.target.value })} />
+                    {[
+                        { label: "Consumer Number", name: "consumerNumber", type: "text", value: consumerInfo.consumerNumber },
+                        { label: "Consumer Name", name: "consumerName", type: "text", value: consumerInfo.consumerName },
+                        { label: "Consumer Address", name: "consumerAddress", type: "text", value: consumerInfo.consumerAddress },
+                        { label: "Bill Number", name: "billNumber", type: "text", value: consumerInfo.billNumber },
+                        { label: "Date of Bill Generation", name: "dateOfBillGeneration", type: "text", value: consumerInfo.dateOfBillGeneration },
+                        { label: "Meter Number", name: "meterNumber", type: "text", value: consumerInfo.meterNumber },
+                        { label: "Previous Meter Reading", name: "previousMeterReading", type: "text", value: consumerInfo.previousMeterReading },
+                        { label: "Current Meter Reading", name: "currentMeterReading", type: "text", value: consumerInfo.currentMeterReading },
+                        { label: "Meter Type", name: "meterType", type: "text", value: consumerInfo.meterType },
+                        { label: "Units Consumed", name: "unitsConsumed", type: "text", value: consumerInfo.unitsConsumed },
+                        { label: "Tariff Rate", name: "tariffRate", type: "text", value: consumerInfo.tariffRate },
+                        { label: "Fixed Charges", name: "fixedCharges", type: "text", value: consumerInfo.fixedCharges },
+                        { label: "Variable Charges", name: "variableCharges", type: "text", value: consumerInfo.variableCharges },
+                        { label: "Additional Charges", name: "additionalCharges", type: "text", value: consumerInfo.additionalCharges },
+                        { label: "Taxes", name: "taxes", type: "text", value: consumerInfo.taxes },
+                        { label: "Total Amount Payable", name: "totalAmountPayable", type: "text", value: consumerInfo.totalAmountPayable },
+                        { label: "Due Date", name: "dueDate", type: "text", value: consumerInfo.dueDate },
+                        { label: "Contact Numbers", name: "contactNumbers", type: "text", value: consumerInfo.contactNumbers },
+                        // { label: "Website or Email", name: "websiteOrEmail", type: "text", value: consumerInfo.websiteOrEmail },
+                        { label: "Additional Notes", name: "additionalNotes", type: "text", value: consumerInfo.additionalNotes },
+                        { label: "Payment Status", name: "paymentStatus", type: "text", value: consumerInfo.paymentStatus },
+                    ].map(({ label, name, type, value }) => (
+                        <div key={name} className="form-group">
+                            <label htmlFor={name}>{label}</label>       
+                            <input
+                                type={type}
+                                className="form-control"
+                                id={name}
+                                name={name}
+                                placeholder={`Enter ${label.toLowerCase()}`}
+                                value={value}
+                                onChange={handleInputChange}
+                            />
                         </div>
+                    ))}
 
-                        <div className="form-group">
-                            <label htmlFor="consumerName">Name of the Consumer</label>
-                            <input type="text" className="form-control" id="consumerName" placeholder="Enter Name"
-                            value={consumerInfo.consumerName} onChange={(e) => setConsumerInfo({ ...consumerInfo, consumerName: e.target.value })} />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="consumerAddress">Address of the Consumer</label>
-                            <input type="text" className="form-control" id="consumerAddress" placeholder="Enter Address" 
-                            value={consumerInfo.consumerAddress} onChange={(e) => setConsumerInfo({ ...consumerInfo, consumerAddress: e.target.value })}/>
-                        </div>
-
-                        {/* Billing Information Section */}
-                        <h4 className="mt-4 text-center" style={{ color: '#005C99' }}>Billing Information</h4>
-
-                        <div className="form-group">
-                            <label htmlFor="billNumber">Bill Number</label>
-                            <input type="text" className="form-control" id="billNumber" placeholder="Enter Bill Number" 
-                            value={consumerInfo.billNumber} onChange={(e) => setConsumerInfo({ ...consumerInfo, billNumber: e.target.value })}/>
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="billDate">Date of Bill Generation</label>
-                            <input type="date" className="form-control" id="billDate"
-                            value={consumerInfo.dateOfBillGeneration} onChange={(e) => setConsumerInfo({ ...consumerInfo, dateOfBillGeneration: e.target.value })}/>
-                        </div>
-
-                        {/* Meter Details Section */}
-                        <h4 className="mt-4 text-center" style={{ color: '#005C99' }}>Meter Details</h4>
-
-                        <div className="form-group">
-                            <label htmlFor="meterNumber">Meter Number</label>
-                            <input type="text" className="form-control" id="meterNumber" placeholder="Enter Meter Number"
-                            value={consumerInfo.meterNumber} onChange={(e) => setConsumerInfo({ ...consumerInfo, meterNumber: e.target.value })} />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="previousReading">Previous Meter Reading</label>
-                            <input type="number" className="form-control" id="previousReading" placeholder="Enter Previous Reading"
-                            value={consumerInfo.previousMeterReading} onChange={(e) => setConsumerInfo({ ...consumerInfo, previousMeterReading: e.target.value })} />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="currentReading">Current Meter Reading</label>
-                            <input type="number" className="form-control" id="currentReading" placeholder="Enter Current Reading"
-                            value={consumerInfo.currentMeterReading} onChange={(e) => setConsumerInfo({ ...consumerInfo, currentMeterReading: e.target.value })} />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="meterType">Type of Meter</label>
-                            <select className="form-control" id="meterType" value={consumerInfo.meterType} onChange={(e) => setConsumerInfo({ ...consumerInfo, meterType: e.target.value })}>
-                                <option>Choose...</option>
-                                <option value="digital">Digital</option>
-                                <option value="analog">Analog</option>
-                            </select>
-                        </div>
-
-                        {/* Usage Details Section */}
-                        <h4 className="mt-4 text-center" style={{ color: '#005C99' }}>Usage Details</h4>
-
-                        <div className="form-group">
-                            <label htmlFor="unitsConsumed">Units Consumed (in kWh)</label>
-                            <input type="number" className="form-control" id="unitsConsumed" placeholder="Enter Units Consumed"
-                            value={consumerInfo.unitsConsumed} onChange={(e) => setConsumerInfo({ ...consumerInfo, unitsConsumed: e.target.value })} />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="tariffRate">Tariff Rate (cost per unit)</label>
-                            <input type="number" className="form-control" id="tariffRate" placeholder="Enter Tariff Rate"
-                            value={consumerInfo.tariffRate} onChange={(e) => setConsumerInfo({ ...consumerInfo, tariffRate: e.target.value })}/>
-                        </div>
-
-                        {/* Charges Section */}
-                        <h4 className="mt-4 text-center" style={{ color: '#005C99' }}>Charges</h4>
-
-                        <div className="form-group">
-                            <label htmlFor="fixedCharges">Fixed Charges</label>
-                            <input type="number" className="form-control" id="fixedCharges" placeholder="Enter Fixed Charges" 
-                            value={consumerInfo.fixedCharges} onChange={(e) => setConsumerInfo({ ...consumerInfo, fixedCharges: e.target.value })}/>
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="variableCharges">Variable Charges</label>
-                            <input type="number" className="form-control" id="variableCharges" placeholder="Enter Variable Charges"
-                            value={consumerInfo.variableCharges} onChange={(e) => setConsumerInfo({ ...consumerInfo, variableCharges: e.target.value })}/>
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="additionalCharges">Additional Charges</label>
-                            <input type="number" className="form-control" id="additionalCharges" placeholder="Enter Additional Charges" 
-                            value={consumerInfo.additionalCharges} onChange={(e) => setConsumerInfo({ ...consumerInfo, additionalCharges: e.target.value })}/>
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="taxes">Taxes</label>
-                            <input type="number" className="form-control" id="taxes" placeholder="Enter Taxes"
-                            value={consumerInfo.taxes} onChange={(e) => setConsumerInfo({ ...consumerInfo, taxes: e.target.value })} />
-                        </div>
-
-                        {/* Total Amount Due Section */}
-                        <h4 className="mt-4 text-center" style={{ color: '#005C99' }}>Total Amount Due</h4>
-
-                        <div className="form-group">
-                            <label htmlFor="totalAmount">Total Amount Payable</label>
-                            <input type="number" className="form-control" id="totalAmount" placeholder="Enter Total Amount" 
-                            value={consumerInfo.totalAmountPayable} onChange={(e) => setConsumerInfo({ ...consumerInfo, totalAmountPayable: e.target.value })}/>
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="dueDate">Due Date</label>
-                            <input type="date" className="form-control" id="dueDate"
-                            value={consumerInfo.dueDate} onChange={(e) => setConsumerInfo({ ...consumerInfo, dueDate: e.target.value })} />
-                        </div>
-
-                        {/* Contact Information Section */}
-                        <h4 className="mt-4 text-center" style={{ color: '#005C99' }}>Contact Information</h4>
-
-                        <div className="form-group">
-                            <label htmlFor="contactNumbers">Contact Numbers</label>
-                            <input type="text" className="form-control" id="contactNumbers" placeholder="Enter Contact Numbers" 
-                            value={consumerInfo.contactNumbers} onChange={(e) => setConsumerInfo({ ...consumerInfo, contactNumbers: e.target.value })}/>
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="websiteEmail">Website/Email</label>
-                            <input type="email" className="form-control" id="websiteEmail" placeholder="Enter Website/Email" 
-                            value={consumerInfo.websiteOrEmail} onChange={(e) => setConsumerInfo({ ...consumerInfo, websiteOrEmail: e.target.value })}/>
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="additionalNotes">Additional Notes</label>
-                            <textarea className="form-control" id="additionalNotes" rows="3" placeholder="Enter Additional Notes"
-                            value={consumerInfo.additionalNotes} onChange={(e) => setConsumerInfo({ ...consumerInfo, additionalNotes: e.target.value })}></textarea>
-                        </div>
-                        <div className='d-flex align-items-center justify-content-center  mb-3'>
-                            <button type="submit" className="btn btn-primary rounded-5 login-second-col-btn w-50 mt-3">Submit</button>
-                        </div>
-
-                    </form>
-
-                </div>
-
-            </Container>
-
-        </>
-    )
-
+                    <div className='d-flex justify-content-center m-4'>
+                    <button type="submit " className="btn btn-primary w-50 mt-3 login-second-col-btn rounded-5">
+                        Submit
+                    </button>
+                    </div>
+                </form>
+            </div>
+        </Container>
+    );
 }
 
-export default AdminPageConsumerInfo
+export default AdminPageConsumerInfo;
