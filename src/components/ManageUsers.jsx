@@ -1,8 +1,11 @@
 import React from 'react'
+import AllConsumers from '../pages/AllConsumers'
 
 function ManageUsers() {
   return (
-    <div>ManageUsers</div>
+    <>
+    <AllConsumers/>
+    </>
   )
 }
 
