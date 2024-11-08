@@ -9,21 +9,20 @@ import { loginApi, registerApi } from '../../services/allApi';
 
 function Login({ register }) {
 
-
     const [userData, setUserData] = useState({
         username: '',
         email: '',
         password: ''
-    })
+    });
 
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { role, setRole } = useContext(roleContext);
-
 
     const handleRegister = async (e) => {
         e.preventDefault();
         const { username, email, password } = userData;
-    
+
         if (!username || !email || !password) {
             Swal.fire({
                 title: "Incomplete Form",
@@ -32,10 +31,12 @@ function Login({ register }) {
             });
             return;
         }
-    
+
         try {
+            setLoading(true);
             const result = await registerApi(userData);
-    
+            setLoading(false);
+
             if (result.status === 201) {
                 setUserData({
                     username: '',
@@ -62,6 +63,7 @@ function Login({ register }) {
                 });
             }
         } catch (error) {
+            setLoading(false);
             Swal.fire({
                 title: "Error",
                 text: `An error occurred: ${error.message}`,
@@ -69,12 +71,11 @@ function Login({ register }) {
             });
         }
     };
-    
 
     const handleLogin = async (e) => {
         e.preventDefault();
         const { username, email, password } = userData;
-    
+
         if (!email || !password) {
             Swal.fire({
                 title: "Incomplete Form",
@@ -83,28 +84,31 @@ function Login({ register }) {
             });
             return;
         }
-    
+
         try {
+            setLoading(true);
             const result = await loginApi(userData);
-    
+            setLoading(false);
+           
+
             if (result.status === 201) {
                 const { _id, username, accountType } = result.data.data;
-    
+
                 sessionStorage.setItem('id', _id);
                 sessionStorage.setItem('role', accountType || null);
-    
+
                 setUserData({
                     username: '',
                     email: '',
                     password: ''
                 });
-    
+
                 Swal.fire({
                     title: "",
                     text: `${username} logged in successfully`,
                     icon: "success"
                 });
-    
+
                 navigate('/home');
             } else {
                 Swal.fire({
@@ -114,6 +118,7 @@ function Login({ register }) {
                 });
             }
         } catch (error) {
+            setLoading(false);
             Swal.fire({
                 title: "Error",
                 text: "An unexpected error occurred. Please try again later.",
@@ -121,15 +126,11 @@ function Login({ register }) {
             });
         }
     };
-    
-
-
 
     return (
         <div>
             <div className='bar'></div>
             <Row className="vh-100">
-                {/* First Column (Login Form) */}
                 <Col md={7} className="d-flex flex-column align-items-center justify-content-center">
                     <Navbar>
                         <Container>
@@ -146,7 +147,6 @@ function Login({ register }) {
                         </Container>
                     </Navbar>
                     <div className="d-flex flex-column align-items-center justify-content-center text-center w-75 mt-4">
-                        {/* for creating new account */}
                         {
                             register ? (
                                 <>
@@ -182,12 +182,24 @@ function Login({ register }) {
                         {
                             register ? (
                                 <>
-                                    <button className="btn btn-success mt-4 mb-3 w-50 rounded-5 login-second-col-btn" onClick={handleRegister}>Sign Up</button>
+                                    <button
+                                        className="btn btn-success mt-4 mb-3 w-50 rounded-5 login-second-col-btn"
+                                        onClick={handleRegister}
+                                        disabled={loading}
+                                    >
+                                        {loading ? "Signing Up..." : "Sign Up"}
+                                    </button>
                                     <p className='mt-3 text-center'>Already a user? Click here to <Link style={{ textDecoration: 'none', color: '#ff5722' }} className='ms-1' to={'/login'}>Login</Link></p>
                                 </>
                             ) : (
                                 <>
-                                    <button className="btn btn-success mt-4 mb-3 w-50 rounded-5 login-second-col-btn" onClick={handleLogin}>Sign In</button>
+                                    <button
+                                        className="btn btn-success mt-4 mb-3 w-50 rounded-5 login-second-col-btn"
+                                        onClick={handleLogin}
+                                        disabled={loading}
+                                    >
+                                        {loading ? "Signing In..." : "Sign In"}
+                                    </button>
                                     <p className='mt-3 text-center'>Not registered? Click here to <Link style={{ textDecoration: 'none', color: '#ff5722' }} className='ms-1' to={'/register'}>Register</Link></p>
                                 </>
                             )
@@ -195,7 +207,6 @@ function Login({ register }) {
                     </div>
                 </Col>
 
-                {/* Second Column (Sign Up Info) */}
                 <Col md={5} className="d-flex flex-column justify-content-center align-items-center text-center text-light p-3 login-second-col-btn p-5">
                     <div className="d-flex flex-column align-items-center">
                         <h1 className="fw-bold new-here">New Here?</h1>

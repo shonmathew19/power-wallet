@@ -9,8 +9,6 @@ function Billing() {
         paymentStatus: ""
     })
 
-    
-
     const location = useLocation();
     const { billNumber, dueDate, totalAmount, userId } = location.state || {};
     
@@ -42,6 +40,15 @@ function Billing() {
                 icon: 'error',
                 title: 'Oops...',
                 text: 'Please fill all the fields before proceeding!',
+            });
+            return;
+        }
+
+        if (!billNumber || !totalAmount || !dueDate) {
+            Swal.fire({
+                icon: 'error',
+                title: 'CONTACT ADMIN',
+                text: 'Contact Admin to fill the billing details',
             });
             return;
         }
@@ -111,6 +118,9 @@ function Billing() {
                         />
                     </div>
 
+                
+
+                    <h4 className="mt-4 mb-3">Payment Details</h4>
                     <div className="w-50 mb-3 text-start">
                         <label htmlFor="paymentMethod" className="mb-1">Select Payment Method</label>
                         <select
@@ -127,8 +137,6 @@ function Billing() {
                             <option value="cash">Cash</option>
                         </select>
                     </div>
-
-                    <h4 className="mt-4 mb-3">Payment Details</h4>
 
                     <div className="w-50 mb-3 text-start">
                         <label htmlFor="cardNumber" className="mb-1">Card Number</label>

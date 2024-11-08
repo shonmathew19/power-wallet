@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { getConsumerInfoById } from '../../services/allApi';
 
 function ConsumerInfoForm() {
+    const [paymentButtonStatus, setPaymentButtonStatus] = useState(false);
+    const [totalAmountPayable, setTotalAmountPayable] = useState();
     const currentDate = new Date().toLocaleString('en-US', {
         year: 'numeric',
         month: 'long',
-    })
+    });
     const [consumerData, setConsumerData] = useState(null);
     const navigate = useNavigate();
     const [fetchCurrentPaymentStatus, setfetchCurrentPaymentStatus] = useState('');
@@ -24,18 +26,39 @@ function ConsumerInfoForm() {
             setConsumerData(response.data.consumer);
             console.log(response.data.consumer);
             setfetchCurrentPaymentStatus(response.data.consumer.paymentStatus);
+            setTotalAmountPayable(response.data.consumer.totalAmountPayable);
         } catch (error) {
             console.error("Failed to fetch consumer information:", error);
         }
     };
 
-    console.log('current payment status:', fetchCurrentPaymentStatus);
-
     useEffect(() => {
         fetchConsumerInfo();
     }, []);
+  
+    useEffect(() => {
+        if (totalAmountPayable === 0) {
+            setPaymentButtonStatus(true);
+        } else {
+            setPaymentButtonStatus(false);
+        }
+    }, [totalAmountPayable]);
+   
 
-    if (!consumerData) return <div>Loading...</div>;
+    if (!consumerData) {
+        return (
+            <div>
+                <div className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center">
+                    <div className="text-center">
+                        <div className="spinner-border text-light" style={{ width: '5rem', height: '5rem' }} role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                        <p className="text-light mt-3 fs-4">Please wait, loading...</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     const handleNavigate = () => {
         navigate('/billing', {
@@ -93,7 +116,7 @@ function ConsumerInfoForm() {
                 </div>
 
                 <div className='d-flex justify-content-center mb-3'>
-                    <button onClick={handleNavigate} className='btn text-light login-second-col-btn rounded-5 w-50'>
+                    <button disabled={paymentButtonStatus} onClick={handleNavigate} className='btn text-light login-second-col-btn rounded-5 w-50'>
                         Continue to payment page
                     </button>
                 </div>
@@ -112,7 +135,6 @@ function ConsumerInfoForm() {
                                         Electricity Bill - {currentDate}
                                         <span className="badge bg-success fs-4">Paid <span className='ms-2'>₹{consumerData.totalAmountPayable}</span></span>
                                     </li>
-
                                 </ul>
                                 <div>
                                     <p>Consumer Number: {consumerData.consumerNumber}</p>
@@ -121,8 +143,6 @@ function ConsumerInfoForm() {
                                     <p>Total Amount Payable: ₹{consumerData.totalAmountPayable}</p>
                                     <p>Payment Status: <span style={{ color: 'green' }}>Paid</span></p>
                                 </div>
-
-
                             </div>
                         </div>
                     </div>

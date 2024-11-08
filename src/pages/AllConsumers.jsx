@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const AllConsumers = () => {
     const [consumers, setConsumers] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
-    const consumersPerPage = 10;
+    const consumersPerPage = 5;
     const tableRef = useRef(null);
 
     const fetchAllConsumers = async () => {
@@ -98,8 +98,8 @@ const AllConsumers = () => {
                 </button>
             </div>
             <div className="table-responsive" style={{ overflowX: 'auto' }} ref={tableRef}>
-                <table className="table table-bordered">
-                    <thead className="thead-light">
+                <table className="table table-bordered table-striped  border-warning">
+                    <thead className="table-dark">
                         <tr>
                             <th>ID</th>
                             <th>Consumer Number</th>

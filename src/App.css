@@ -20,12 +20,13 @@ body {
   font-size: 48px;
   font-weight: bold;
 }
-.red-yellow-white-gradient{
+
+.red-yellow-white-gradient {
   background: linear-gradient(45deg, #ff0000, #c8ff00, white);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: bold;
-  
+
 }
 
 .logo-image {
@@ -184,30 +185,41 @@ footer a:hover {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  height: 100vh;
+  height: 90vh;
   overflow: auto;
 }
 
 .dashboard-sidebar li:hover {
- background-color: #a9abed;
- border-radius: 5px;
+  background-color: #a9abed;
+  border-radius: 5px;
 }
 
-.glass-container {
+/* .glass-container {
+ 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 2rem;
+  height: 60vh;
   min-height: 100vh;
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
 
+
+} */
+
+.icon-image {
+  max-width: 100%;      
+  max-height: 200px;    
+  width: auto;          
+  height: auto;
+  border-radius: 8px;  
 }
 
 .glass-card {
   padding: 2rem;
-  margin-bottom: 1rem;
+  margin: 10vh;
   text-align: center;
   background: rgba(255, 255, 255, 0.3);
   border-radius: 15px;
@@ -241,7 +253,7 @@ footer a:hover {
   overflow: hidden;
   white-space: nowrap;
   width: 100%;
-  background-color: #fcfcfc; 
+  background-color: #fcfcfc;
   padding: 10px;
 }
 
@@ -253,13 +265,18 @@ footer a:hover {
 .marquee-content span {
   display: inline-block;
   padding: 0 50px;
-  color: #105104; 
+  color: #105104;
   font-size: 1.2rem;
 }
 
 @keyframes scroll-left {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 
@@ -315,15 +332,3 @@ footer a:hover {
     background-position: 0% 50%;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-

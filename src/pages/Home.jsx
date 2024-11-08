@@ -22,23 +22,37 @@ function Home() {
             </div>
 
             <Row className="home-row">
-                <Col md={6} className="d-flex justify-content-center align-items-center">
+                <Col md={6} className="d-flex justify-content-center align-items-center flex-column">
                     <div className="position-relative">
                         <div className="bg-overlay" />
-                        <div className="d-flex justify-content-center align-items-center p-5 m-4 border shadow-lg mt-5 text-light rounded-4 bg-dark position-relative z-index-1">
+                        <div className="d-flex justify-content-center align-items-center p-2 m-2 border shadow-lg mt-5 text-light rounded-4 bg-dark position-relative z-index-1">
                             <h2 className="text-center" style={{ fontStyle: 'italic', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.6)' }}>
                                 "Green energy is not just the future; it's the key to preserving our planet's present for generations to come."
                             </h2>
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqlS3yeC7_qSu3s4zBWG2U3vidCCVYLDX3pw&s" alt="Energy Icon" className="icon-position" />
+                            <img
+                                src="https://img.freepik.com/premium-photo/esg-green-energy-sustainable-industry-with-windmills-solar-energy-panels-ai-generation_201606-4871.jpg"
+                                alt="Energy Icon"
+                                className="icon-image"
+                            />
                         </div>
                     </div>
+                    <div className="position-relative">
+                        <div className="bg-overlay" />
+                        <div className="d-flex justify-content-center align-items-center p-2 m-2 border shadow-lg mt-5 text-light rounded-4 bg-dark position-relative z-index-1">
+                            <h2  className=" text-center" style={{ fontStyle: 'italic', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.6)' }}>
+                                "Join the movement for sustainable energy and contribute to a greener future for all."
+                            </h2>
+                            <img
+                                src="https://images.prismic.io/inspirecleanenergy/renewable-energy-facts.jpeg?auto=compress,format&rect=0,0,1840,1036&w=1840&h=1036"
+                                alt="Energy Icon"
+                                className="icon-image"
+                            />
+                        </div>
+                    </div>
+
                 </Col>
 
-
-
-
-
-                <Col md={6} className="glass-container rounded-5" style={{ padding: '25px',marginTop:'10px',marginBottom:'10px' }}>
+                <Col md={6} className="glass-container rounded-5 d-flex justify-content-center align-items-center" style={{}}>
                     {
                         activeRole == null && (
                             <div className="glass-card">

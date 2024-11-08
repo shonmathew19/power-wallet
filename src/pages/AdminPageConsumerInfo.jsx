@@ -7,6 +7,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 function AdminPageConsumerInfo() {
     const navigate = useNavigate();
     const location = useLocation();
+
+    const [loading, setLoading] = useState();
     const consumerData = location.state?.consumer || {};
 
     const [consumerInfo, setConsumerInfo] = useState({
@@ -30,7 +32,7 @@ function AdminPageConsumerInfo() {
         contactNumbers: "",
         websiteOrEmail: "",
         additionalNotes: "",
-        paymentStatus:""
+        paymentStatus: ""
     });
 
     useEffect(() => {
@@ -47,31 +49,15 @@ function AdminPageConsumerInfo() {
         }));
     };
 
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     const result = await consumerInfoApi(consumerInfo);
-
-    //     if (result.status === 200) {
-    //         Swal.fire({
-    //             text: 'Data submitted successfully',
-    //             icon: "success"
-    //         });
-    //         navigate('/');
-    //     } else {
-    //         Swal.fire({
-    //             title: "OOPS",
-    //             text: 'Something happened',
-    //             icon: "warning"
-    //         });
-    //     }
-    // };
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         try {
-            
+            setLoading(true)
             const result = await editConsumerInfoApi(consumerInfo.userId, consumerInfo);
-    
+            setLoading(false)
+
+
             if (result.status === 200) {
                 Swal.fire({
                     text: 'Consumer information updated successfully',
@@ -93,10 +79,22 @@ function AdminPageConsumerInfo() {
             });
         }
     };
-    
+
 
     return (
         <Container>
+            {
+                loading&&
+                <div className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center">
+                    <div className="text-center">
+                        <div className="spinner-border text-light" style={{ width: '5rem', height: '5rem' }} role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                        <p className="text-light mt-3 fs-4">Please wait, SAVING...</p>
+                    </div>
+                </div>
+
+            }
             <h2 className="mb-2 mt-3 text-center" style={{ color: '#004B73' }}>
                 Admin Consumer Information Form
             </h2>
@@ -125,28 +123,43 @@ function AdminPageConsumerInfo() {
                         { label: "Total Amount Payable", name: "totalAmountPayable", type: "text", value: consumerInfo.totalAmountPayable },
                         { label: "Due Date", name: "dueDate", type: "text", value: consumerInfo.dueDate },
                         { label: "Contact Numbers", name: "contactNumbers", type: "text", value: consumerInfo.contactNumbers },
-                        // { label: "Website or Email", name: "websiteOrEmail", type: "text", value: consumerInfo.websiteOrEmail },
                         { label: "Additional Notes", name: "additionalNotes", type: "text", value: consumerInfo.additionalNotes },
-                        { label: "Payment Status", name: "paymentStatus", type: "text", value: consumerInfo.paymentStatus },
+                        { label: "Payment Status", name: "paymentStatus", type: "select", value: consumerInfo.paymentStatus },
                     ].map(({ label, name, type, value }) => (
                         <div key={name} className="form-group">
-                            <label htmlFor={name}>{label}</label>       
-                            <input
-                                type={type}
-                                className="form-control"
-                                id={name}
-                                name={name}
-                                placeholder={`Enter ${label.toLowerCase()}`}
-                                value={value}
-                                onChange={handleInputChange}
-                            />
+                            <label htmlFor={name}>{label}</label>
+                            {type === "select" ? (
+                                <select
+                                    className="form-control"
+                                    id={name}
+                                    name={name}
+                                    value={value}
+                                    onChange={handleInputChange}
+                                >
+                                    <option value="">Select Payment Status</option>
+                                    <option value="Not done">Not done</option>
+                                    <option value="done">done</option>
+
+
+                                </select>
+                            ) : (
+                                <input
+                                    type={type}
+                                    className="form-control"
+                                    id={name}
+                                    name={name}
+                                    placeholder={`Enter ${label.toLowerCase()}`}
+                                    value={value}
+                                    onChange={handleInputChange}
+                                />
+                            )}
                         </div>
                     ))}
 
                     <div className='d-flex justify-content-center m-4'>
-                    <button type="submit " className="btn btn-primary w-50 mt-3 login-second-col-btn rounded-5">
-                        Submit
-                    </button>
+                        <button type="submit" className="btn btn-primary w-50 mt-3 login-second-col-btn rounded-5">
+                            Submit
+                        </button>
                     </div>
                 </form>
             </div>
