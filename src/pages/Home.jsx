@@ -23,9 +23,21 @@ function Home() {
 
             <Row className="home-row">
                 <Col md={6} className="d-flex justify-content-center align-items-center flex-column">
-                    <div className="position-relative">
-                        <div className="bg-overlay" />
-                        <div className="d-flex justify-content-center align-items-center p-2 m-2 border shadow-lg mt-5 text-light rounded-4 bg-dark position-relative z-index-1">
+                
+                    <div>
+                        <div className="d-flex justify-content-center align-items-center p-2 m-2 border shadow-lg mt-5 text-light rounded-4 bg-dark">
+                            <h2 className="text-center" style={{ fontStyle: 'italic', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.6)' }}>
+                                "Join the movement for sustainable energy and contribute to a greener future for all."
+                            </h2>
+                            <img
+                                src='https://assets-us-01.kc-usercontent.com/7dd6b71d-d672-0004-6a4d-7043e1d0db33/e4b1bf32-684f-431c-883b-23adb4df93b5/Energy%20usage.gif'
+                                alt="Energy Icon"
+                                className="icon-image"
+                            />
+                        </div>
+                    </div>
+                    <div>
+                        <div className="d-flex justify-content-center align-items-center p-2 m-2 border shadow-lg mt-5 text-light rounded-4 bg-dark">
                             <h2 className="text-center" style={{ fontStyle: 'italic', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.6)' }}>
                                 "Green energy is not just the future; it's the key to preserving our planet's present for generations to come."
                             </h2>
@@ -36,21 +48,8 @@ function Home() {
                             />
                         </div>
                     </div>
-                    <div className="position-relative">
-                        <div className="bg-overlay" />
-                        <div className="d-flex justify-content-center align-items-center p-2 m-2 border shadow-lg mt-5 text-light rounded-4 bg-dark position-relative z-index-1">
-                            <h2  className=" text-center" style={{ fontStyle: 'italic', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.6)' }}>
-                                "Join the movement for sustainable energy and contribute to a greener future for all."
-                            </h2>
-                            <img
-                                src="https://images.prismic.io/inspirecleanenergy/renewable-energy-facts.jpeg?auto=compress,format&rect=0,0,1840,1036&w=1840&h=1036"
-                                alt="Energy Icon"
-                                className="icon-image"
-                            />
-                        </div>
-                    </div>
-
                 </Col>
+
 
                 <Col md={6} className="glass-container rounded-5 d-flex justify-content-center align-items-center" style={{}}>
                     {
