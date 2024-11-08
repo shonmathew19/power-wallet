@@ -8,6 +8,7 @@ import { createNewConnectionApi } from '../../services/allApi';
 import { Link } from 'react-router-dom';
 
 function NewConnection() {
+    const [loading, setLoading] = useState();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         applicantName: '',
@@ -61,7 +62,9 @@ function NewConnection() {
         }
 
         try {
+            setLoading(true)
             const newConnection = await createNewConnectionApi(formData);
+            setLoading(false)
             console.log(formData);
             console.log(newConnection, '............');
 
@@ -91,6 +94,18 @@ function NewConnection() {
 
     return (
         <>
+           {
+                loading &&
+                <div className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center">
+                    <div className="text-center">
+                        <div className="spinner-border text-light" style={{ width: '5rem', height: '5rem' }} role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                        <p className="text-light mt-3 fs-4">Please wait, SAVING.</p>
+                    </div>
+                </div>
+
+            }
             <Container>
                 <h2 className='text-center mt-3' style={{ color: '#004B73' }}>New Connection Application Form</h2>
                 <form onSubmit={handleSubmit}>

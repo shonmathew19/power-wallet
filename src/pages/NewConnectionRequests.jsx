@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { viewAllNewConnectionsApi } from '../../services/allApi';
 
 const NewConnectionRequests = () => {
+    const [loading, setLoading] = useState();
     const [applicantsData, setApplicantsData] = useState({ data: [] });
 
     const fetchAllNewConnections = async () => {
         try {
+            setLoading(true)
             const newConnectionData = await viewAllNewConnectionsApi();
+            setLoading(false)
             setApplicantsData(newConnectionData);
         } catch (err) {
             console.log('Error fetching new connections', err);
@@ -24,6 +27,19 @@ const NewConnectionRequests = () => {
     }, [applicantsData]);
 
     return (
+        <>
+         {
+                loading &&
+                <div className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center">
+                    <div className="text-center">
+                        <div className="spinner-border text-light" style={{ width: '5rem', height: '5rem' }} role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                        <p className="text-light mt-3 fs-4">Please wait, NEW CONNECTION REQUESTS LOADING...</p>
+                    </div>
+                </div>
+
+            }
         <div className="container mt-4">
             <h2>Applicants Information</h2>
             <table className="table table-striped table-bordered">
@@ -65,6 +81,7 @@ const NewConnectionRequests = () => {
                 </tbody>
             </table>
         </div>
+        </>
     );
 };
 

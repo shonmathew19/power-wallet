@@ -50,8 +50,9 @@ const Dashboard = () => {
 
           <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 className="h2">Dashboard</h1>
-
-            <button className="btn btn-primary">Add New</button>
+            
+            <Link to={'/new-connection'}> <button className="btn btn-primary">Add New</button></Link>
+           
           </div>
           <div className='d-flex'>
             <div className='d-flex flex-column m-3'>

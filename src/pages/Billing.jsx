@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import { editConsumerInfoApi } from '../../services/allApi';
 
 function Billing() {
+    const [loading, setLoading] = useState();
     const id = sessionStorage.getItem('id');
     const [consumerInfo, setConsumerInfo] = useState({
         paymentStatus: ""
@@ -52,9 +53,9 @@ function Billing() {
             });
             return;
         }
-    
+        setLoading(true)
         const result = await editConsumerInfoApi(id, { ...consumerInfo, paymentStatus: 'done' });
-    
+        setLoading(false)
         if (result) {
             setConsumerInfo((prevState) => ({
                 ...prevState, 
@@ -80,6 +81,18 @@ function Billing() {
 
     return (
         <>
+           {
+                loading &&
+                <div className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center">
+                    <div className="text-center">
+                        <div className="spinner-border text-light" style={{ width: '5rem', height: '5rem' }} role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                        <p className="text-light mt-3 fs-4">Please wait, PAYMENT IS PROCESSING...</p>
+                    </div>
+                </div>
+
+            }
             <div className="container mt-5">
                 <h2 className="mb-4 text-center text-primary">Billing</h2>
                 <form className="d-flex flex-column align-items-center" onSubmit={handleSubmit}>

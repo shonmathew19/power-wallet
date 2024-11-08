@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
 
 const AllConsumers = () => {
+    const [loading, setLoading] = useState();
     const [consumers, setConsumers] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const consumersPerPage = 5;
@@ -11,7 +12,9 @@ const AllConsumers = () => {
 
     const fetchAllConsumers = async () => {
         try {
+            setLoading(true)
             const consumersData = await allConsumersApi();
+            setLoading(false)
             const allConsumers = consumersData.data.allConsumers;
 
             setConsumers(allConsumers);
@@ -71,7 +74,7 @@ const AllConsumers = () => {
                     text: `${data.consumerName} deleted successfully`,
                     icon: "success"
                 });
-             
+
                 fetchAllConsumers();
             }
         } catch (error) {
@@ -85,113 +88,128 @@ const AllConsumers = () => {
     }
 
     return (
-        <div className="container mt-4" style={{ position: 'relative' }}>
-            <h2 className="text-center mb-4">Consumers List</h2>
-            <div className="fixed-left-button" style={{ position: 'fixed', left: '10px', top: '200px', zIndex: 1000 }}>
-                <button className="btn btn-secondary" onClick={scrollLeft} style={{ backgroundColor: 'orange' }}>
-                    <i className="fa-solid fa-angles-left"></i>
-                </button>
-            </div>
-            <div className="fixed-right-button" style={{ position: 'fixed', right: '10px', top: '200px', zIndex: 1000 }}>
-                <button className="btn btn-secondary" onClick={scrollRight} style={{ backgroundColor: 'orange' }}>
-                    <i className="fa-solid fa-angles-right"></i>
-                </button>
-            </div>
-            <div className="table-responsive" style={{ overflowX: 'auto' }} ref={tableRef}>
-                <table className="table table-bordered table-striped  border-warning">
-                    <thead className="table-dark">
-                        <tr>
-                            <th>ID</th>
-                            <th>Consumer Number</th>
-                            <th>Consumer Name</th>
-                            <th>Consumer Address</th>
-                            <th>Bill Number</th>
-                            <th>Date of Bill Generation</th>
-                            <th>Meter Number</th>
-                            <th>Previous Meter Reading</th>
-                            <th>Current Meter Reading</th>
-                            <th>Meter Type</th>
-                            <th>Units Consumed</th>
-                            <th>Tariff Rate</th>
-                            <th>Fixed Charges</th>
-                            <th>Variable Charges</th>
-                            <th>Additional Charges</th>
-                            <th>Taxes</th>
-                            <th>Total Amount Payable</th>
-                            <th>Due Date</th>
-                            <th>Contact Numbers</th>
-                            <th>Website or Email</th>
-                            <th>Additional Notes</th>
-                            <th>Payment Status</th>
-                            <th>ACTIONS</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {currentConsumers.length > 0 ? (
-                            currentConsumers.map((consumer, index) => (
-                                <tr key={index}>
-                                    <td>{index + startIndex + 1}</td>
-                                    <td>{consumer.consumerNumber}</td>
-                                    <td>{consumer.consumerName}</td>
-                                    <td>{consumer.consumerAddress}</td>
-                                    <td>{consumer.billNumber}</td>
-                                    <td>{consumer.dateOfBillGeneration}</td>
-                                    <td>{consumer.meterNumber}</td>
-                                    <td>{consumer.previousMeterReading}</td>
-                                    <td>{consumer.currentMeterReading}</td>
-                                    <td>{consumer.meterType}</td>
-                                    <td>{consumer.unitsConsumed}</td>
-                                    <td>{consumer.tariffRate}</td>
-                                    <td>{consumer.fixedCharges}</td>
-                                    <td>{consumer.variableCharges}</td>
-                                    <td>{consumer.additionalCharges}</td>
-                                    <td>{consumer.taxes}</td>
-                                    <td>{consumer.totalAmountPayable}</td>
-                                    <td>{consumer.dueDate}</td>
-                                    <td>{consumer.contactNumbers}</td>
-                                    <td>{consumer.websiteOrEmail}</td>
-                                    <td>{consumer.additionalNotes}</td>
-                                    <td>{consumer.paymentStatus}</td>
-                                    <td>
 
-                                        <div className="d-flex justify-content-between">
-                                            <Link to={'/admin-page-consumer-info'} state={{ consumer }}>
-                                                <button className='btn btn-outline-primary w-100 me-1' title="Edit">
-                                                    <i className="fa-solid fa-pen-to-square"></i>
-                                                </button>
-                                            </Link>
+        <>
+            {
+                loading &&
+                <div className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center">
+                    <div className="text-center">
+                        <div className="spinner-border text-light" style={{ width: '5rem', height: '5rem' }} role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                        <p className="text-light mt-3 fs-4">Please wait, DATA IS LOADING.</p>
+                    </div>
+                </div>
 
-                                            <button className='btn btn-danger w-100 ms-1' title="Delete"
-                                                onClick={() => deleteConsumer(consumer)}>
-                                                <i className="fa-solid fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))
-                        ) : (
+            }
+            <div className="container mt-4" style={{ position: 'relative' }}>
+                <h2 className="text-center mb-4">Consumers List</h2>
+                <div className="fixed-left-button" style={{ position: 'fixed', left: '10px', top: '200px', zIndex: 1000 }}>
+                    <button className="btn btn-secondary" onClick={scrollLeft} style={{ backgroundColor: 'orange' }}>
+                        <i className="fa-solid fa-angles-left"></i>
+                    </button>
+                </div>
+                <div className="fixed-right-button" style={{ position: 'fixed', right: '10px', top: '200px', zIndex: 1000 }}>
+                    <button className="btn btn-secondary" onClick={scrollRight} style={{ backgroundColor: 'orange' }}>
+                        <i className="fa-solid fa-angles-right"></i>
+                    </button>
+                </div>
+                <div className="table-responsive" style={{ overflowX: 'auto' }} ref={tableRef}>
+                    <table className="table table-bordered table-striped  border-warning">
+                        <thead className="table-dark">
                             <tr>
-                                <td colSpan="21" className="text-center">No consumers found</td>
+                                <th>ID</th>
+                                <th>Consumer Number</th>
+                                <th>Consumer Name</th>
+                                <th>Consumer Address</th>
+                                <th>Bill Number</th>
+                                <th>Date of Bill Generation</th>
+                                <th>Meter Number</th>
+                                <th>Previous Meter Reading</th>
+                                <th>Current Meter Reading</th>
+                                <th>Meter Type</th>
+                                <th>Units Consumed</th>
+                                <th>Tariff Rate</th>
+                                <th>Fixed Charges</th>
+                                <th>Variable Charges</th>
+                                <th>Additional Charges</th>
+                                <th>Taxes</th>
+                                <th>Total Amount Payable</th>
+                                <th>Due Date</th>
+                                <th>Contact Numbers</th>
+                                <th>Website or Email</th>
+                                <th>Additional Notes</th>
+                                <th>Payment Status</th>
+                                <th>ACTIONS</th>
                             </tr>
-                        )}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {currentConsumers.length > 0 ? (
+                                currentConsumers.map((consumer, index) => (
+                                    <tr key={index}>
+                                        <td>{index + startIndex + 1}</td>
+                                        <td>{consumer.consumerNumber}</td>
+                                        <td>{consumer.consumerName}</td>
+                                        <td>{consumer.consumerAddress}</td>
+                                        <td>{consumer.billNumber}</td>
+                                        <td>{consumer.dateOfBillGeneration}</td>
+                                        <td>{consumer.meterNumber}</td>
+                                        <td>{consumer.previousMeterReading}</td>
+                                        <td>{consumer.currentMeterReading}</td>
+                                        <td>{consumer.meterType}</td>
+                                        <td>{consumer.unitsConsumed}</td>
+                                        <td>{consumer.tariffRate}</td>
+                                        <td>{consumer.fixedCharges}</td>
+                                        <td>{consumer.variableCharges}</td>
+                                        <td>{consumer.additionalCharges}</td>
+                                        <td>{consumer.taxes}</td>
+                                        <td>{consumer.totalAmountPayable}</td>
+                                        <td>{consumer.dueDate}</td>
+                                        <td>{consumer.contactNumbers}</td>
+                                        <td>{consumer.websiteOrEmail}</td>
+                                        <td>{consumer.additionalNotes}</td>
+                                        <td>{consumer.paymentStatus}</td>
+                                        <td>
+
+                                            <div className="d-flex justify-content-between">
+                                                <Link to={'/admin-page-consumer-info'} state={{ consumer }}>
+                                                    <button className='btn btn-outline-primary w-100 me-1' title="Edit">
+                                                        <i className="fa-solid fa-pen-to-square"></i>
+                                                    </button>
+                                                </Link>
+
+                                                <button className='btn btn-danger w-100 ms-1' title="Delete"
+                                                    onClick={() => deleteConsumer(consumer)}>
+                                                    <i className="fa-solid fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="21" className="text-center">No consumers found</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="d-flex justify-content-between mt-3">
+                    <button
+                        className="btn btn-secondary m-3 w-25"
+                        onClick={handlePrevious}
+                        disabled={currentPage === 0}>
+                        Previous
+                    </button>
+                    <button
+                        className="btn btn-secondary m-3 w-25"
+                        onClick={handleNext}
+                        disabled={currentPage === totalPages - 1}>
+                        Next
+                    </button>
+                </div>
             </div>
-            <div className="d-flex justify-content-between mt-3">
-                <button
-                    className="btn btn-secondary m-3 w-25"
-                    onClick={handlePrevious}
-                    disabled={currentPage === 0}>
-                    Previous
-                </button>
-                <button
-                    className="btn btn-secondary m-3 w-25"
-                    onClick={handleNext}
-                    disabled={currentPage === totalPages - 1}>
-                    Next
-                </button>
-            </div>
-        </div>
+        </>
     );
 };
 
