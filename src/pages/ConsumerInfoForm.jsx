@@ -122,8 +122,8 @@ function ConsumerInfoForm() {
                 </div>
             </div>
         ) : (
-            <div className="container m-5">
-                <div className="row">
+            <div className="container m-5 d-flex justify-content-center align-items-center">
+                <div className="row  w-100">
                     <div className="col-12">
                         <div className="card">
                             <div className="card-header bg-success text-white">

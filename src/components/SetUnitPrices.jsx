@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { addLatestPrices, getLatestPrices } from '../../services/allApi';
 
 function SetUnitPrices() {
     const [formData, setFormData] = useState({
@@ -8,6 +9,19 @@ function SetUnitPrices() {
     });
     const [updateSuccess, setUpdateSuccess] = useState(false);
 
+    const fetchUnitPrices = async () => {
+        try {
+            const result = await getLatestPrices();
+            setFormData(result.data);
+        } catch (error) {
+            console.error("Error fetching latest prices:", error);
+        }
+    };
+   
+    useEffect(() => {
+        fetchUnitPrices();
+    }, []);
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -16,24 +30,26 @@ function SetUnitPrices() {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Unit Price:', formData.unitPrice);
-        console.log('Additional Charges:', formData.additionalCharges);
-        console.log('Taxes:', formData.taxes);
-        setUpdateSuccess(true);
-        setFormData({
-            unitPrice: '',
-            additionalCharges: '',
-            taxes: ''
-        });
+        try {
+            console.log('from data',formData)
+           const result = await addLatestPrices(formData)
+           console.log(result,'handle submit')
+            setUpdateSuccess(true);
+        } catch (error) {
+            console.error("Error updating prices:", error);
+            setUpdateSuccess(false);
+        }
     };
 
     return (
         <div className="container mt-5 mb-3">
             <div className="card shadow-lg">
                 <div className="card-body">
-                    <h2 className="card-title text-center mb-4" style={{ color: '#004B73' }}>Update Unit Price & Fees</h2>
+                    <h2 className="card-title text-center mb-4" style={{ color: '#004B73' }}>
+                        Update Unit Price & Fees
+                    </h2>
                     {updateSuccess && (
                         <div className="alert alert-success" role="alert">
                             Prices updated successfully!

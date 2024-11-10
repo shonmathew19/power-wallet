@@ -32,6 +32,16 @@ function Login({ register }) {
             return;
         }
 
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            Swal.fire({
+                title: "Invalid Email",
+                text: "Please enter a valid email address.",
+                icon: "warning"
+            });
+            return;
+        }
+
         try {
             setLoading(true);
             const result = await registerApi(userData);
@@ -74,7 +84,7 @@ function Login({ register }) {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        const { username, email, password } = userData;
+        const { email, password } = userData;
 
         if (!email || !password) {
             Swal.fire({
@@ -85,11 +95,21 @@ function Login({ register }) {
             return;
         }
 
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(email)) {
+            Swal.fire({
+                title: "Invalid Email",
+                text: "Please enter a valid email address.",
+                icon: "warning"
+            });
+            return;
+        }
+
         try {
             setLoading(true);
             const result = await loginApi(userData);
             setLoading(false);
-           
 
             if (result.status === 201) {
                 const { _id, username, accountType } = result.data.data;

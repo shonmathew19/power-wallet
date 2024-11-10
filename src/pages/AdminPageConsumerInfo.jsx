@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
-import { consumerInfoApi, editConsumerInfoApi } from '../../services/allApi';
+import { editConsumerInfoApi, getLatestPrices } from '../../services/allApi';
 import Swal from 'sweetalert2';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -8,7 +8,22 @@ function AdminPageConsumerInfo() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const [loading, setLoading] = useState();
+    const fetchUnitPrices = async () => {
+        try {
+            const result = await getLatestPrices();
+            setConsumerInfo(prevState => ({
+                ...prevState,
+                unitPrice: result.data.unitPrice,
+                additionalCharges: result.data.additionalCharges,
+                taxes: result.data.taxes
+            }));
+        } catch (error) {
+            console.error("Error fetching latest prices:", error);
+        }
+    };
+
+    const [loading, setLoading] = useState(false);
+    const [isAmountCalculated, setIsAmountCalculated] = useState(false);
     const consumerData = location.state?.consumer || {};
 
     const [consumerInfo, setConsumerInfo] = useState({
@@ -27,6 +42,7 @@ function AdminPageConsumerInfo() {
         variableCharges: "",
         additionalCharges: "",
         taxes: "",
+        unitPrice: "",
         totalAmountPayable: "",
         dueDate: "",
         contactNumbers: "",
@@ -39,6 +55,7 @@ function AdminPageConsumerInfo() {
         if (consumerData) {
             setConsumerInfo(consumerData);
         }
+        fetchUnitPrices();
     }, [consumerData]);
 
     const handleInputChange = (e) => {
@@ -52,11 +69,21 @@ function AdminPageConsumerInfo() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            setLoading(true)
-            const result = await editConsumerInfoApi(consumerInfo.userId, consumerInfo);
-            setLoading(false)
+        if (!isAmountCalculated) {
+            Swal.fire({
+                title: "Error",
+                text: "Please calculate the total amount before submitting.",
+                icon: "warning"
+            });
+            return;
+        }
 
+        navigate('/all-consumers');
+
+        try {
+            setLoading(true);
+            const result = await editConsumerInfoApi(consumerInfo.userId, consumerInfo);
+            setLoading(false);
 
             if (result.status === 200) {
                 Swal.fire({
@@ -80,11 +107,19 @@ function AdminPageConsumerInfo() {
         }
     };
 
+    const calculateTotalAmount = () => {
+        const { tariffRate, unitsConsumed, fixedCharges, variableCharges, additionalCharges, taxes, unitPrice } = consumerInfo;
+        const totalAmount = (parseFloat(unitPrice) * parseFloat(unitsConsumed)) + parseFloat(fixedCharges) + parseFloat(variableCharges) + parseFloat(additionalCharges) + parseFloat(taxes);
+        setConsumerInfo(prevState => ({
+            ...prevState,
+            totalAmountPayable: totalAmount.toFixed(2)
+        }));
+        setIsAmountCalculated(true);
+    };
 
     return (
         <Container>
-            {
-                loading&&
+            {loading && (
                 <div className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center">
                     <div className="text-center">
                         <div className="spinner-border text-light" style={{ width: '5rem', height: '5rem' }} role="status">
@@ -93,8 +128,7 @@ function AdminPageConsumerInfo() {
                         <p className="text-light mt-3 fs-4">Please wait, SAVING...</p>
                     </div>
                 </div>
-
-            }
+            )}
             <h2 className="mb-2 mt-3 text-center" style={{ color: '#004B73' }}>
                 Admin Consumer Information Form
             </h2>
@@ -104,7 +138,7 @@ function AdminPageConsumerInfo() {
                         Consumer Information
                     </h4>
 
-                    {[
+                    {[ 
                         { label: "Consumer Number", name: "consumerNumber", type: "text", value: consumerInfo.consumerNumber },
                         { label: "Consumer Name", name: "consumerName", type: "text", value: consumerInfo.consumerName },
                         { label: "Consumer Address", name: "consumerAddress", type: "text", value: consumerInfo.consumerAddress },
@@ -118,14 +152,15 @@ function AdminPageConsumerInfo() {
                         { label: "Tariff Rate", name: "tariffRate", type: "text", value: consumerInfo.tariffRate },
                         { label: "Fixed Charges", name: "fixedCharges", type: "text", value: consumerInfo.fixedCharges },
                         { label: "Variable Charges", name: "variableCharges", type: "text", value: consumerInfo.variableCharges },
-                        { label: "Additional Charges", name: "additionalCharges", type: "text", value: consumerInfo.additionalCharges },
-                        { label: "Taxes", name: "taxes", type: "text", value: consumerInfo.taxes },
-                        { label: "Total Amount Payable", name: "totalAmountPayable", type: "text", value: consumerInfo.totalAmountPayable },
+                        { label: "Additional Charges", name: "additionalCharges", type: "text", value: consumerInfo.additionalCharges,  disabled: true },
+                        { label: "Taxes", name: "taxes", type: "text", value: consumerInfo.taxes,  disabled: true },
+                        { label: "Unit Price", name: "unitPrice", type: "text", value: consumerInfo.unitPrice,  disabled: true},
+                        { label: "Total Amount Payable", name: "totalAmountPayable", type: "text", value: consumerInfo.totalAmountPayable, disabled: true },
                         { label: "Due Date", name: "dueDate", type: "text", value: consumerInfo.dueDate },
                         { label: "Contact Numbers", name: "contactNumbers", type: "text", value: consumerInfo.contactNumbers },
                         { label: "Additional Notes", name: "additionalNotes", type: "text", value: consumerInfo.additionalNotes },
-                        { label: "Payment Status", name: "paymentStatus", type: "select", value: consumerInfo.paymentStatus },
-                    ].map(({ label, name, type, value }) => (
+                        { label: "Payment Status", name: "paymentStatus", type: "select", value: consumerInfo.paymentStatus }
+                    ].map(({ label, name, type, value, disabled }) => (
                         <div key={name} className="form-group">
                             <label htmlFor={name}>{label}</label>
                             {type === "select" ? (
@@ -139,8 +174,6 @@ function AdminPageConsumerInfo() {
                                     <option value="">Select Payment Status</option>
                                     <option value="Not done">Not done</option>
                                     <option value="done">done</option>
-
-
                                 </select>
                             ) : (
                                 <input
@@ -151,12 +184,23 @@ function AdminPageConsumerInfo() {
                                     placeholder={`Enter ${label.toLowerCase()}`}
                                     value={value}
                                     onChange={handleInputChange}
+                                    disabled={disabled}
                                 />
                             )}
                         </div>
                     ))}
 
-                    <div className='d-flex justify-content-center m-4'>
+                    <div className="d-flex justify-content-center m-4">
+                        <button
+                            type="button"
+                            className="btn btn-warning w-50 mt-3"
+                            onClick={calculateTotalAmount}
+                        >
+                            Calculate Total Amount
+                        </button>
+                    </div>
+
+                    <div className="d-flex justify-content-center m-4">
                         <button type="submit" className="btn btn-primary w-50 mt-3 login-second-col-btn rounded-5">
                             Submit
                         </button>

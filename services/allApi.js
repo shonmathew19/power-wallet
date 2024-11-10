@@ -49,3 +49,14 @@ export const getConsumerInfoById = async (id) => {
 export const editConsumerInfoApi = async (userId, consumerDetails) => {
     return await commonAPI('PUT', `${BASE_URL}/update-consumer/${userId}`, consumerDetails, '');
 };
+
+
+//get latest prices
+export const getLatestPrices= async()=>{
+    return await commonAPI('GET', `${BASE_URL}/admin/latest-price`, '', '');
+}
+
+//add price updates
+export const addLatestPrices= async(formData)=>{
+    return await commonAPI('POST', `${BASE_URL}/admin/price-updates`, formData, '');
+}
