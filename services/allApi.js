@@ -13,7 +13,7 @@ export const consumerInfoApi = async (consumerDetails) => {
 
 //login
 export const loginApi = async (loginDetails) => {
-    return await commonAPI('POST', `${BASE_URL}/user/login`, loginDetails, '')
+    return await commonAPI('POST', `${BASE_URL}/user/login`, loginDetails,'')
 }
 
 // all consumers
@@ -53,10 +53,11 @@ export const editConsumerInfoApi = async (userId, consumerDetails) => {
 
 //get latest prices
 export const getLatestPrices= async()=>{
-    return await commonAPI('GET', `${BASE_URL}/admin/latest-price`, '', '');
+    return await commonAPI('GET', `${BASE_URL}/admin/latest-price`, '', );
 }
 
 //add price updates
-export const addLatestPrices= async(formData)=>{
-    return await commonAPI('POST', `${BASE_URL}/admin/price-updates`, formData, '');
+export const addLatestPrices= async(formData,reqHeader)=>{
+    
+    return await commonAPI('POST', `${BASE_URL}/admin/price-updates`, formData, reqHeader);
 }

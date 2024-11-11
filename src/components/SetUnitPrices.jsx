@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { addLatestPrices, getLatestPrices } from '../../services/allApi';
 
 function SetUnitPrices() {
+
+
     const [formData, setFormData] = useState({
         unitPrice: '',
         additionalCharges: '',
@@ -9,7 +11,8 @@ function SetUnitPrices() {
     });
     const [updateSuccess, setUpdateSuccess] = useState(false);
 
-    const fetchUnitPrices = async () => {
+    const fetchUnitPrices = async () => { 
+        
         try {
             const result = await getLatestPrices();
             setFormData(result.data);
@@ -17,11 +20,11 @@ function SetUnitPrices() {
             console.error("Error fetching latest prices:", error);
         }
     };
-   
+
     useEffect(() => {
         fetchUnitPrices();
     }, []);
-    
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -33,9 +36,14 @@ function SetUnitPrices() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            console.log('from data',formData)
-           const result = await addLatestPrices(formData)
-           console.log(result,'handle submit')
+            const token = sessionStorage.getItem('token');
+            const reqHeader = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            };
+            console.log('from data', formData)
+            const result = await addLatestPrices(formData, reqHeader)
+            console.log(result, 'handle submit')
             setUpdateSuccess(true);
         } catch (error) {
             console.error("Error updating prices:", error);
@@ -62,7 +70,7 @@ function SetUnitPrices() {
                                 type="number"
                                 name="unitPrice"
                                 className="form-control"
-                                value={formData.unitPrice}
+                                value={formData?.unitPrice}
                                 onChange={handleChange}
                                 required
                             />
@@ -73,7 +81,7 @@ function SetUnitPrices() {
                                 type="number"
                                 name="additionalCharges"
                                 className="form-control"
-                                value={formData.additionalCharges}
+                                value={formData?.additionalCharges}
                                 onChange={handleChange}
                                 required
                             />
@@ -84,7 +92,7 @@ function SetUnitPrices() {
                                 type="number"
                                 name="taxes"
                                 className="form-control"
-                                value={formData.taxes}
+                                value={formData?.taxes}
                                 onChange={handleChange}
                                 required
                             />

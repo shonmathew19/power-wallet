@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
-import { Link, useNavigate } from 'react-router-dom';
+import { json, Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { roleContext } from '../context/RoleContext';
 import { loginApi, registerApi } from '../../services/allApi';
@@ -109,13 +109,18 @@ function Login({ register }) {
         try {
             setLoading(true);
             const result = await loginApi(userData);
+            console.log('login result',result);
+
             setLoading(false);
 
             if (result.status === 201) {
                 const { _id, username, accountType } = result.data.data;
+                
 
+                sessionStorage.setItem('loggedUser',JSON.stringify(result.data.data))
                 sessionStorage.setItem('id', _id);
                 sessionStorage.setItem('role', accountType || null);
+                sessionStorage.setItem('token',result.data.token)
 
                 setUserData({
                     username: '',
